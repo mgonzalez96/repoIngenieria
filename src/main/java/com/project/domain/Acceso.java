@@ -22,5 +22,6 @@ public class Acceso implements Serializable {
 	private String username;
 	private Byte[] password;
 	private Date fechasys;
+	private Integer estado;
 
 }

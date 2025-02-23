@@ -55,4 +55,14 @@ public class AccesoController {
 		return ResponseEntity.ok(accesoService.modificaAcceso(accesoDTO));
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para inactivar el acceso del usuario por documento y
+	 *              usuario
+	 */
+	@PutMapping("/eliminarAcceso")
+	public ResponseEntity<Integer> eliminarAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {
+		return ResponseEntity.ok(accesoService.eliminarAcceso(accesoDTO));
+	}
+
 }

@@ -31,5 +31,6 @@ public class Usuario implements Serializable {
 	private String celular;
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", locale = "es-CO", timezone = "America/Lima")
 	private Date fechaSys;
+	private Integer estado;
 
 }

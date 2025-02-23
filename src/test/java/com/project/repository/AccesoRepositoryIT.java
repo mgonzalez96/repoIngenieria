@@ -70,5 +70,15 @@ class AccesoRepositoryIT {
 
 		assertNotNull(accesoRepositoryImpl.modificaAcceso(acceso), "Acceso recuperado");
 	}
+	
+	@Test
+	@Order(5)
+	void eliminarAcceso() throws Exception {
+		AccesoDTO acceso = new AccesoDTO();
+		acceso.setUsername("1113123457");
+		acceso.getDocumento().setDocumento(1113123457L);
+
+		assertNotNull(accesoRepositoryImpl.eliminarAcceso(acceso), "Acceso eliminado");
+	}
 
 }

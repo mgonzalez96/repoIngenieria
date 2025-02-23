@@ -49,5 +49,15 @@ public class AccesoServiceImpl implements AccesoService {
 		return accesoRepositoryImpl.modificaAcceso(accesoDTO);
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para inactivar el acceso del usuario por documento y
+	 *              usuario
+	 */
+	@Override
+	public Integer eliminarAcceso(AccesoDTO accesoDTO) throws Exception {
+		return accesoRepositoryImpl.eliminarAcceso(accesoDTO);
+	}
+
 
 }

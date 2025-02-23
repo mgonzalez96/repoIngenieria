@@ -25,8 +25,8 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.usuario( "
-					+ "	documento, nombreuno, nombredos, apellidouno, apellidodos, email, fechanac, celular, fechasys) "
-					+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) ";
+					+ "	documento, nombreuno, nombredos, apellidouno, apellidodos, email, fechanac, celular, fechasys, estado) "
+					+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, 1) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -81,11 +81,13 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para eliminar usuarios por numero de documento
+	 * @Descripcion Método para inactivar usuarios por numero de documento
 	 */
 	public Integer eliminarUsuario(Long documento) throws Exception {
 		try {
-			String SQL = " DELETE FROM usuario WHERE documento = ? ";
+			String SQL = " UPDATE public.usuario "
+					+ "	SET estado = 0 "
+					+ "	WHERE documento = ? ";
 			return getJdbcTemplate().update(SQL, documento);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl eliminarUsuario: " + e.toString());
@@ -136,7 +138,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public List<UsuarioDTO> consultaAllUsuario() throws Exception {
 		try {
-			String SQL = " SELECT * FROM usuario ";
+			String SQL = " SELECT * FROM usuario WHERE estado = 1 ";
 			return getJdbcTemplate().query(SQL, consultaAllUsuarioRowMapper);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario: " + e.toString());

@@ -28,5 +28,12 @@ public interface AccesoService {
 	 *              usuario
 	 */
 	public Integer modificaAcceso(AccesoDTO accesoDTO) throws Exception;
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para inactivar el acceso del usuario por documento y
+	 *              usuario
+	 */
+	public Integer eliminarAcceso(AccesoDTO accesoDTO) throws Exception;
 
 }
