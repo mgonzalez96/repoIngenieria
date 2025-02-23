@@ -5,6 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import com.project.DTO.AccesoDTO;
+import com.project.DTO.UsuarioDTO;
 import com.project.repository.AccesoRepositoryImpl;
 
 @Service
@@ -12,10 +13,9 @@ public class AccesoServiceImpl implements AccesoService {
 
 	@Autowired
 	AccesoRepositoryImpl accesoRepositoryImpl;
-	
+
 	@Autowired
 	private JavaMailSender javaMailSender;
-		
 
 	/**
 	 * @Usuario Mariana Acevedo
@@ -80,7 +80,17 @@ public class AccesoServiceImpl implements AccesoService {
 			System.err.println("Exception AccesoServiceImpl sendEmail: " + e.toString());
 			e.printStackTrace();
 			throw new Exception("Error al enviar el email");
-		}		
+		}
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para consultar los datos del acceso del usuario por
+	 *              documento
+	 */
+	@Override
+	public AccesoDTO datosAcceso(UsuarioDTO usuario) throws Exception {
+		return accesoRepositoryImpl.datosAcceso(usuario);
 	}
 
 }

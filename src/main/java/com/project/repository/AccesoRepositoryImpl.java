@@ -15,13 +15,17 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.project.DTO.AccesoDTO;
+import com.project.DTO.UsuarioDTO;
 
 @Repository
 public class AccesoRepositoryImpl extends JdbcDaoSupport {
 
-	//TODO Esta instancia se comentarea, en la proxima entrega implementar el cifrado de la contraseña
-	/*@Autowired
-	private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();*/
+	// TODO Esta instancia se comentarea, en la proxima entrega implementar el
+	// cifrado de la contraseña
+	/*
+	 * @Autowired private static final BCryptPasswordEncoder passwordEncoder = new
+	 * BCryptPasswordEncoder();
+	 */
 
 	public AccesoDTO acceso = new AccesoDTO();
 
@@ -35,7 +39,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " INSERT INTO public.acceso( " + "	idacceso, documento, username, password, fechasys, estado, perfil) "
+			String SQL = " INSERT INTO public.acceso( "
+					+ "	idacceso, documento, username, password, fechasys, estado, perfil) "
 					+ "	VALUES (nextval('sec_acceso'), ?, ?, ?, CURRENT_TIMESTAMP, 1, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
@@ -45,8 +50,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 					ps.setString(2, accesoDTO.getUsername());
 					ps.setString(3, accesoDTO.getPassword());
 					ps.setString(4, accesoDTO.getPerfil());
-					//TODO Cifrado de contraseña para la proxima entrega
-					//ps.setString(3, passwordEncoder.encode(accesoDTO.getPassword()));
+					// TODO Cifrado de contraseña para la proxima entrega
+					// ps.setString(3, passwordEncoder.encode(accesoDTO.getPassword()));
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
@@ -91,10 +96,11 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 				accesoDTO.setPassword(rs.getString("password"));
 				accesoDTO.setPerfil(rs.getString("perfil"));
 				try {
-					//TODO Cifrado de contraseña para la proxima entrega
-					/*if (!passwordEncoder.matches(acceso.getPassword(), accesoDTO.getPassword())) {
-						throw new Exception("Usuario y/o Contraseña Invalida...");
-					}*/
+					// TODO Cifrado de contraseña para la proxima entrega
+					/*
+					 * if (!passwordEncoder.matches(acceso.getPassword(), accesoDTO.getPassword()))
+					 * { throw new Exception("Usuario y/o Contraseña Invalida..."); }
+					 */
 					if (!acceso.getPassword().equals(accesoDTO.getPassword())) {
 						throw new Exception("Usuario y/o Contraseña Invalida...");
 					}
@@ -114,10 +120,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public AccesoDTO recuperaAcceso(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " SELECT a.username, a.password, u.email  "
-					+ " FROM public.acceso a, public.usuario u  "
-					+ " WHERE u.documento = a.documento "
-					+ " AND username = ? ";
+			String SQL = " SELECT a.username, a.password, u.email  " + " FROM public.acceso a, public.usuario u  "
+					+ " WHERE u.documento = a.documento " + " AND username = ? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -160,7 +164,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					//ps.setString(1, passwordEncoder.encode(accesoDTO.getPassword()));
+					// ps.setString(1, passwordEncoder.encode(accesoDTO.getPassword()));
 					ps.setString(1, accesoDTO.getPassword());
 					ps.setString(2, accesoDTO.getUsername());
 					ps.setLong(3, accesoDTO.getDocumento().getDocumento());
@@ -195,6 +199,50 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 		} catch (Exception e) {
 			System.err.println("Exception AccesoRepositoryImpl eliminarAcceso: " + e.toString());
 			throw new Exception("Error al eliminar el acceso del usuario");
+		}
+	}
+	// ----------------------------------------------------------------------------------
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para consultar los datos del acceso del usuario por documento
+	 */
+	public AccesoDTO datosAcceso(UsuarioDTO usuario) throws Exception {
+		try {
+			String SQL = " SELECT a.idacceso, a.documento, a.username, a.perfil, "
+					+ "       u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos "
+					+ "	FROM public.acceso a, public.usuario u " + "	WHERE u.documento = a.documento "
+					+ "	AND u.documento = ? ";
+
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuario.getDocumento());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, new datosAccesoResult());
+		} catch (Exception e) {
+			System.err.println("Exception AccesoRepositoryImpl datosAcceso: " + e.toString());
+			throw new Exception("Usuario no encontrado");
+		}
+	}
+
+	private class datosAccesoResult implements ResultSetExtractor<AccesoDTO> {
+		@Override
+		public AccesoDTO extractData(ResultSet rs) throws SQLException, DataAccessException {
+			AccesoDTO accesoDTO = null;
+			while (rs.next()) {
+				accesoDTO = new AccesoDTO();
+				accesoDTO.setIdacceso(rs.getLong("idacceso"));
+				accesoDTO.getDocumento().setDocumento(rs.getLong("documento"));
+				accesoDTO.setUsername(rs.getString("username"));
+				accesoDTO.setPerfil(rs.getString("perfil"));
+				accesoDTO.getDocumento().setNombreuno(rs.getString("nombreuno"));
+				accesoDTO.getDocumento().setNombredos(rs.getString("nombredos"));
+				accesoDTO.getDocumento().setApellidouno(rs.getString("apellidouno"));
+				accesoDTO.getDocumento().setApellidodos(rs.getString("apellidodos"));
+			}
+			return accesoDTO;
 		}
 	}
 

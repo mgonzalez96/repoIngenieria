@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project.DTO.AccesoDTO;
+import com.project.DTO.UsuarioDTO;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
@@ -77,6 +78,15 @@ class AccesoRepositoryIT {
 		acceso.getDocumento().setDocumento(1113123457L);
 
 		assertNotNull(accesoRepositoryImpl.eliminarAcceso(acceso), "Acceso eliminado");
+	}
+	
+	@Test
+	@Order(6)
+	void datosAcceso() throws Exception {
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setDocumento(1113123457L);
+
+		assertNotNull(accesoRepositoryImpl.datosAcceso(usuario), "Acceso consultado");
 	}
 
 }
