@@ -122,6 +122,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 				usuario.setFechanac(rs.getDate("fechaNac"));
 				usuario.setCelular(rs.getLong("celular"));
 				usuario.setFechasys(rs.getDate("fechaSys"));
+				usuario.setEstado(rs.getInt("estado"));
 			} catch (Exception e) {
 				System.err.println("Exception UsuarioRepositoryImpl consultaUsuarioByDocumento_1: " + e.toString());
 			}
@@ -158,6 +159,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 				usuario.setFechanac(rs.getDate("fechaNac"));
 				usuario.setCelular(rs.getLong("celular"));
 				usuario.setFechasys(rs.getDate("fechaSys"));
+				usuario.setEstado(rs.getInt("estado"));
 			} catch (Exception e) {
 				System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario_1: " + e.toString());
 			}
