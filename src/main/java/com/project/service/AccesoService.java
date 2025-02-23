@@ -49,5 +49,11 @@ public interface AccesoService {
 	 *              documento
 	 */
 	public AccesoDTO datosAcceso(UsuarioDTO usuario) throws Exception;
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception;
 
 }

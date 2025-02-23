@@ -92,5 +92,14 @@ public class AccesoServiceImpl implements AccesoService {
 	public AccesoDTO datosAcceso(UsuarioDTO usuario) throws Exception {
 		return accesoRepositoryImpl.datosAcceso(usuario);
 	}
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	@Override
+	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+		return accesoRepositoryImpl.activarUsuario(usuarioDTO);
+	}
 
 }

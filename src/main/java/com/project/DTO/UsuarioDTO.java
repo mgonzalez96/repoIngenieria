@@ -31,6 +31,5 @@ public class UsuarioDTO implements Serializable {
 	private Long celular;
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", locale = "es-CO", timezone = "America/Lima")
 	private Date fechasys;
-	private Integer estado;
 
 }

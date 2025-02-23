@@ -185,13 +185,11 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer eliminarAcceso(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " UPDATE public.acceso   " + "     SET estado = 0   " + " WHERE username = ?   "
-					+ " AND documento = ? ";
+			String SQL = " UPDATE public.acceso   " + "     SET estado = 0   " + " WHERE documento = ?   ";
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setString(1, accesoDTO.getUsername());
-					ps.setLong(2, accesoDTO.getDocumento().getDocumento());
+					ps.setLong(1, accesoDTO.getDocumento().getDocumento());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
@@ -211,7 +209,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = " SELECT a.idacceso, a.documento, a.username, a.perfil, "
 					+ "       u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos,"
-					+ "       a.estado estadoAcceso, u.estado estadoUsuario "
+					+ "       a.estado estadoAcceso "
 					+ "	FROM public.acceso a, public.usuario u " + "	WHERE u.documento = a.documento "
 					+ "	AND u.documento = ? ";
 
@@ -243,9 +241,29 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 				accesoDTO.getDocumento().setApellidouno(rs.getString("apellidouno"));
 				accesoDTO.getDocumento().setApellidodos(rs.getString("apellidodos"));
 				accesoDTO.setEstado(rs.getInt("estadoAcceso"));
-				accesoDTO.getDocumento().setEstado(rs.getInt("estadoUsuario"));
 			}
 			return accesoDTO;
+		}
+	}
+
+//-----------------------------------------------------------------------
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+		try {
+			String SQL = " UPDATE public.acceso " + "	SET estado = 1 " + "	WHERE documento = ? ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuarioDTO.getDocumento());
+				}
+			};
+			return getJdbcTemplate().update(SQL, setter);
+		} catch (Exception e) {
+			System.err.println("Exception AccesoRepositoryImpl activarUsuario: " + e.toString());
+			throw new Exception("Usuario no existe para activarlo");
 		}
 	}
 

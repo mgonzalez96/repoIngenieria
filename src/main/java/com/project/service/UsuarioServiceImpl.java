@@ -34,15 +34,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para eliminar usuarios por numero de documento
-	 */
-	@Override
-	public Integer eliminarUsuario(Long documento) throws Exception {
-		return usuarioRepositoryImpl.eliminarUsuario(documento);
-	}
-
-	/**
-	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para consultar usuarios por numero de documento
 	 */
 	@Override
@@ -57,15 +48,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Override
 	public List<UsuarioDTO> consultaAllUsuario() throws Exception {
 		return usuarioRepositoryImpl.consultaAllUsuario();
-	}
-
-	/**
-	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para activar usuarios por numero de documento
-	 */
-	@Override
-	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception {
-		return usuarioRepositoryImpl.activarUsuario(usuarioDTO);
 	}
 
 }

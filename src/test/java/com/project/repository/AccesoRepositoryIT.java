@@ -69,7 +69,7 @@ class AccesoRepositoryIT {
 
 		assertNotNull(accesoRepositoryImpl.modificaAcceso(acceso), "Acceso recuperado");
 	}
-	
+
 	@Test
 	@Order(5)
 	void eliminarAcceso() throws Exception {
@@ -79,7 +79,7 @@ class AccesoRepositoryIT {
 
 		assertNotNull(accesoRepositoryImpl.eliminarAcceso(acceso), "Acceso eliminado");
 	}
-	
+
 	@Test
 	@Order(6)
 	void datosAcceso() throws Exception {
@@ -87,6 +87,18 @@ class AccesoRepositoryIT {
 		usuario.setDocumento(1113123457L);
 
 		assertNotNull(accesoRepositoryImpl.datosAcceso(usuario), "Acceso consultado");
+	}
+
+	@Test
+	@Order(7)
+	void activarUsuario() throws Exception {
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setCelular(3151234500L);
+
+		Integer resultado = 0;
+		resultado = accesoRepositoryImpl.activarUsuario(usuario);
+
+		assertNotNull(resultado, "Usuario activo");
 	}
 
 }

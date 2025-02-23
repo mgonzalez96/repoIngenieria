@@ -72,15 +72,6 @@ class UsuarioRepositoryIT {
 
 	@Test
 	@Order(3)
-	void eliminarUsuario() throws Exception {
-		Integer resultado = 0;
-		resultado = usuarioRepositoryImpl.eliminarUsuario(1113123451L);
-
-		assertNotNull(resultado, "Usuario eliminado");
-	}
-
-	@Test
-	@Order(4)
 	void consultaUsuarioByDocumento() throws Exception {
 		UsuarioDTO usuario = new UsuarioDTO();
 		usuario.setDocumento(1113123457L);
@@ -91,7 +82,7 @@ class UsuarioRepositoryIT {
 	}
 
 	@Test
-	@Order(5)
+	@Order(4)
 	void consultaAllUsuario() throws Exception {
 		List<UsuarioDTO> lista = new ArrayList<>();
 
@@ -100,16 +91,6 @@ class UsuarioRepositoryIT {
 		assertFalse(lista.isEmpty(), "Usuarios consultados");
 	}
 
-	@Test
-	@Order(6)
-	void activarUsuario() throws Exception {
-		UsuarioDTO usuario = new UsuarioDTO();
-		usuario.setCelular(3151234500L);
-
-		Integer resultado = 0;
-		resultado = usuarioRepositoryImpl.activarUsuario(usuario);
-
-		assertNotNull(resultado, "Usuario activo");
-	}
+	
 
 }

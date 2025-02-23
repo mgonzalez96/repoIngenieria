@@ -108,4 +108,13 @@ public class AccesoController {
 		return ResponseEntity.ok(accesoService.datosAcceso(usuario));
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	@PutMapping("/activarUsuario")
+	public ResponseEntity<Integer> activarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
+		return ResponseEntity.ok(accesoService.activarUsuario(usuarioDTO));
+	}
+
 }
