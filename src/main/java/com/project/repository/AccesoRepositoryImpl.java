@@ -210,7 +210,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	public AccesoDTO datosAcceso(UsuarioDTO usuario) throws Exception {
 		try {
 			String SQL = " SELECT a.idacceso, a.documento, a.username, a.perfil, "
-					+ "       u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos "
+					+ "       u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos,"
+					+ "       a.estado estadoAcceso, u.estado estadoUsuario "
 					+ "	FROM public.acceso a, public.usuario u " + "	WHERE u.documento = a.documento "
 					+ "	AND u.documento = ? ";
 
@@ -241,6 +242,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 				accesoDTO.getDocumento().setNombredos(rs.getString("nombredos"));
 				accesoDTO.getDocumento().setApellidouno(rs.getString("apellidouno"));
 				accesoDTO.getDocumento().setApellidodos(rs.getString("apellidodos"));
+				accesoDTO.setEstado(rs.getInt("estadoAcceso"));
+				accesoDTO.getDocumento().setEstado(rs.getInt("estadoUsuario"));
 			}
 			return accesoDTO;
 		}
