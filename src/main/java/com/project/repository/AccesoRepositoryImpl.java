@@ -35,8 +35,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " INSERT INTO public.acceso( " + "	idacceso, documento, username, password, fechasys, estado) "
-					+ "	VALUES (nextval('sec_acceso'), ?, ?, ?, CURRENT_TIMESTAMP, 1) ";
+			String SQL = " INSERT INTO public.acceso( " + "	idacceso, documento, username, password, fechasys, estado, perfil) "
+					+ "	VALUES (nextval('sec_acceso'), ?, ?, ?, CURRENT_TIMESTAMP, 1, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -44,6 +44,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 					ps.setLong(1, accesoDTO.getDocumento().getDocumento());
 					ps.setString(2, accesoDTO.getUsername());
 					ps.setString(3, accesoDTO.getPassword());
+					ps.setString(4, accesoDTO.getPerfil());
 					//TODO Cifrado de contraseña para la proxima entrega
 					//ps.setString(3, passwordEncoder.encode(accesoDTO.getPassword()));
 				}
@@ -65,7 +66,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	public AccesoDTO validaAcceso(AccesoDTO accesoDTO) throws Exception {
 		acceso = accesoDTO;
 		try {
-			String SQL = " SELECT username, password " + "	FROM public.acceso " + "	WHERE username = ? ";
+			String SQL = " SELECT username, password, perfil " + "	FROM public.acceso " + "	WHERE username = ? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -88,6 +89,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 				accesoDTO = new AccesoDTO();
 				accesoDTO.setUsername(rs.getString("username"));
 				accesoDTO.setPassword(rs.getString("password"));
+				accesoDTO.setPerfil(rs.getString("perfil"));
 				try {
 					//TODO Cifrado de contraseña para la proxima entrega
 					/*if (!passwordEncoder.matches(acceso.getPassword(), accesoDTO.getPassword())) {

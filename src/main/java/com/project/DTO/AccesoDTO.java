@@ -27,6 +27,7 @@ public class AccesoDTO implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", locale = "es-CO", timezone = "America/Lima")
 	private Date fechasys;
 	private Integer estado;
+	private String perfil;
 	//------Add por lógica---------------//
 	private String asunto;
 	private String descripcion;
