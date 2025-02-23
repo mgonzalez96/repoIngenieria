@@ -47,11 +47,8 @@ class UsuarioRepositoryIT {
 	    usuario.setFechanac(format.parse("18/07/1996"));
 	    usuario.setCelular(3151234585L);
 	    usuario.setFechasys(new Date());
-	    
-	    UsuarioDTO usuarioResult = new UsuarioDTO();
-	    usuarioResult = usuarioRepositoryImpl.crearUsuario(usuario);
-	    
-	    assertNotNull(usuarioResult, "Usuario creado");
+	    	    
+	    assertNotNull(usuarioRepositoryImpl.crearUsuario(usuario), "Usuario creado");
 	}
 	
 	@Test

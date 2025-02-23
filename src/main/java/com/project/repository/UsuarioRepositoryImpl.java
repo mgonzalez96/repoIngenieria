@@ -22,7 +22,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para crear usuarios
 	 */
-	public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
+	public Integer crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.usuario( "
 					+ "	documento, nombreuno, nombredos, apellidouno, apellidodos, email, fechanac, celular, fechasys, estado) "
@@ -40,9 +40,8 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 					ps.setDate(7, new java.sql.Date(usuarioDTO.getFechanac().getTime()));
 					ps.setLong(8, usuarioDTO.getCelular());
 				}
-			};
-			getJdbcTemplate().update(SQL, setter);
-			return usuarioDTO;
+			};			
+			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl crearUsuario: " + e.toString());
 			e.printStackTrace();

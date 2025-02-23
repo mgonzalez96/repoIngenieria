@@ -33,7 +33,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para crear el acceso del usuario
 	 */
-	public AccesoDTO crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception {
+	public Integer crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.acceso( " + "	idacceso, documento, username, password, fechasys, estado) "
 					+ "	VALUES (nextval('sec_acceso'), ?, ?, ?, CURRENT_TIMESTAMP, 1) ";
@@ -48,8 +48,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 					//ps.setString(3, passwordEncoder.encode(accesoDTO.getPassword()));
 				}
 			};
-			getJdbcTemplate().update(SQL, setter);
-			return accesoDTO;
+			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception AccesoRepositoryImpl crearAccesoUsuario: " + e.toString());
 			e.printStackTrace();
@@ -113,7 +112,10 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public AccesoDTO recuperaAcceso(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " SELECT password  " + "	FROM public.acceso  " + "	WHERE username = ? ";
+			String SQL = " SELECT a.username, a.password, u.email  "
+					+ " FROM public.acceso a, public.usuario u  "
+					+ " WHERE u.documento = a.documento "
+					+ " AND username = ? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -134,8 +136,9 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 			AccesoDTO accesoDTO = null;
 			while (rs.next()) {
 				accesoDTO = new AccesoDTO();
-				accesoDTO.setPassword(rs.getString(1));
-
+				accesoDTO.setUsername(rs.getString(1));
+				accesoDTO.setPassword(rs.getString(2));
+				accesoDTO.getDocumento().setEmail(rs.getString(3));
 			}
 			return accesoDTO;
 		}

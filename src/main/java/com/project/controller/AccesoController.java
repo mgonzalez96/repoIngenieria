@@ -23,7 +23,7 @@ public class AccesoController {
 	 * @Descripcion Método para crear el acceso del usuario
 	 */
 	@PostMapping("/crearAccesoUsuario")
-	public ResponseEntity<AccesoDTO> crearAccesoUsuario(@RequestBody AccesoDTO accesoDTO) throws Exception {
+	public ResponseEntity<Integer> crearAccesoUsuario(@RequestBody AccesoDTO accesoDTO) throws Exception {
 		return ResponseEntity.ok(accesoService.crearAccesoUsuario(accesoDTO));
 	}
 
@@ -63,6 +63,18 @@ public class AccesoController {
 	@PutMapping("/eliminarAcceso")
 	public ResponseEntity<Integer> eliminarAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {
 		return ResponseEntity.ok(accesoService.eliminarAcceso(accesoDTO));
+	}
+
+	@PostMapping("/olvidoPassword")
+	public ResponseEntity<AccesoDTO> olvidoPassword(@RequestBody AccesoDTO accesoDTO) throws Exception {
+		accesoDTO = accesoService.recuperaAcceso(accesoDTO);
+		if (accesoDTO != null) {
+			accesoDTO.setAsunto(" Recuperación de Usuario y Contraseña");
+			accesoDTO
+					.setDescripcion("Usuario: " + accesoDTO.getUsername() + "\nContraseña: " + accesoDTO.getPassword());
+		}
+		accesoService.sendEmail(accesoDTO.getDocumento().getEmail(), accesoDTO.getAsunto(), accesoDTO.getDescripcion());
+		return ResponseEntity.ok(accesoDTO);
 	}
 
 }

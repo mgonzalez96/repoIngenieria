@@ -10,7 +10,17 @@ spring:
   application:
     name: projectIngenieria
 
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ingenieriasoftware06@gmail.com
+    password: Ingenieria2025*
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 logging:
   level:

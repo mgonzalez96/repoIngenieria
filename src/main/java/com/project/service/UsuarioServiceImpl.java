@@ -19,7 +19,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	 * @Descripcion Método para crear usuarios
 	 */
 	@Override
-	public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
+	public Integer crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
 		return usuarioRepositoryImpl.crearUsuario(usuarioDTO);
 	}
 

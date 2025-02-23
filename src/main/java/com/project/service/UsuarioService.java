@@ -10,7 +10,7 @@ public interface UsuarioService {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para crear usuarios
 	 */
-	public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) throws Exception;
+	public Integer crearUsuario(UsuarioDTO usuarioDTO) throws Exception;
 
 	/**
 	 * @Usuario Mariana Acevedo

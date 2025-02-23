@@ -34,9 +34,7 @@ class AccesoRepositoryIT {
 		acceso.setUsername("1113123457");
 		acceso.setPassword("1234");
 
-		acceso = accesoRepositoryImpl.crearAccesoUsuario(acceso);
-
-		assertNotNull(acceso, "Acceso del usuario creado");
+		assertNotNull(accesoRepositoryImpl.crearAccesoUsuario(acceso), "Acceso del usuario creado");
 	}
 
 	@Test

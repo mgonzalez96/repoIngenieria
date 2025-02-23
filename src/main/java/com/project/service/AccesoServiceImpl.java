@@ -1,6 +1,8 @@
 package com.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import com.project.DTO.AccesoDTO;
 import com.project.repository.AccesoRepositoryImpl;
@@ -10,6 +12,9 @@ public class AccesoServiceImpl implements AccesoService {
 
 	@Autowired
 	AccesoRepositoryImpl accesoRepositoryImpl;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 		
 
 	/**
@@ -17,7 +22,7 @@ public class AccesoServiceImpl implements AccesoService {
 	 * @Descripcion Método para crear el acceso del usuario
 	 */
 	@Override
-	public AccesoDTO crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception {
+	public Integer crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception {
 		return accesoRepositoryImpl.crearAccesoUsuario(accesoDTO);
 	}
 
@@ -59,5 +64,23 @@ public class AccesoServiceImpl implements AccesoService {
 		return accesoRepositoryImpl.eliminarAcceso(accesoDTO);
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para enviar por correo credenciales olvidadas
+	 */
+	@Override
+	public void sendEmail(String para, String asunto, String descripcion) throws Exception {
+		try {
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setTo(para);
+			message.setSubject(asunto);
+			message.setText(descripcion);
+			javaMailSender.send(message);
+		} catch (Exception e) {
+			System.err.println("Exception AccesoServiceImpl sendEmail: " + e.toString());
+			e.printStackTrace();
+			throw new Exception("Error al enviar el email");
+		}		
+	}
 
 }

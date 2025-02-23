@@ -8,7 +8,7 @@ public interface AccesoService {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para crear el acceso del usuario
 	 */
-	public AccesoDTO crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception;
+	public Integer crearAccesoUsuario(AccesoDTO accesoDTO) throws Exception;
 	
 	/**
 	 * @Usuario Mariana Acevedo
@@ -35,5 +35,11 @@ public interface AccesoService {
 	 *              usuario
 	 */
 	public Integer eliminarAcceso(AccesoDTO accesoDTO) throws Exception;
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para enviar por correo credenciales olvidadas
+	 */
+	public void sendEmail(String para, String asunto, String descripcion) throws Exception;
 
 }
