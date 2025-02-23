@@ -1,7 +1,6 @@
 package com.project.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.project.DTO.UsuarioDTO;
 import com.project.service.UsuarioService;
 
@@ -31,7 +29,7 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
 		return ResponseEntity.ok(usuarioService.crearUsuario(usuarioDTO));
 	}
-	
+
 	/**
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para modificar usuarios por numero de documento
@@ -40,16 +38,16 @@ public class UsuarioController {
 	public ResponseEntity<Integer> modificarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
 		return ResponseEntity.ok(usuarioService.modificarUsuario(usuarioDTO));
 	}
-	
+
 	/**
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para eliminar usuarios por numero de documento
 	 */
 	@DeleteMapping("/eliminarUsuario/{documento}")
-	public ResponseEntity<Integer> eliminarUsuario(@PathVariable Integer documento) throws Exception {
+	public ResponseEntity<Integer> eliminarUsuario(@PathVariable Long documento) throws Exception {
 		return ResponseEntity.ok(usuarioService.eliminarUsuario(documento));
 	}
-	
+
 	/**
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para consultar usuarios por numero de documento
@@ -58,7 +56,7 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDTO> consultaUsuarioByDocumento(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
 		return ResponseEntity.ok(usuarioService.consultaUsuarioByDocumento(usuarioDTO));
 	}
-	
+
 	/**
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para consultar todos los usuarios

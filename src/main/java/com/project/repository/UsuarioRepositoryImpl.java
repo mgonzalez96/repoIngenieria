@@ -1,20 +1,21 @@
 package com.project.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import org.springframework.jdbc.core.JdbcTemplate;
+import javax.sql.DataSource;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import com.project.DTO.UsuarioDTO;
 
 @Repository
-public class UsuarioRepositoryImpl {
+public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 
-	private final JdbcTemplate jdbcTemplate;
-
-	public UsuarioRepositoryImpl(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public UsuarioRepositoryImpl(DataSource dataSource) {
+		setDataSource(dataSource);
 	}
 
 	/**
@@ -23,17 +24,30 @@ public class UsuarioRepositoryImpl {
 	 */
 	public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
 		try {
-			String SQL = " INSERT INTO usuario (documento, nombreUno, nombreDos, apellidoUno, apellidoDos, email, fechaNac, celular, fechaSys) "
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, sysdate) ";
-			jdbcTemplate.update(SQL, usuarioDTO.getDocumento(), usuarioDTO.getNombreUno(), usuarioDTO.getNombreDos(),
-					usuarioDTO.getApellidoUno(), usuarioDTO.getApellidoDos(), usuarioDTO.getEmail(),
-					usuarioDTO.getFechaNac(), usuarioDTO.getCelular());
+			String SQL = " INSERT INTO public.usuario( "
+					+ "	documento, nombreuno, nombredos, apellidouno, apellidodos, email, fechanac, celular, fechasys) "
+					+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) ";
+
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuarioDTO.getDocumento());
+					ps.setString(2, usuarioDTO.getNombreuno());
+					ps.setString(3, usuarioDTO.getNombredos());
+					ps.setString(4, usuarioDTO.getApellidouno());
+					ps.setString(5, usuarioDTO.getApellidodos());
+					ps.setString(6, usuarioDTO.getEmail());
+					ps.setDate(7, new java.sql.Date(usuarioDTO.getFechanac().getTime()));
+					ps.setLong(8, usuarioDTO.getCelular());
+				}
+			};
+			getJdbcTemplate().update(SQL, setter);
 			return usuarioDTO;
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl crearUsuario: " + e.toString());
+			e.printStackTrace();
 			throw new Exception("Error al crear el usuario");
 		}
-
 	}
 
 	/**
@@ -45,9 +59,20 @@ public class UsuarioRepositoryImpl {
 			String SQL = " UPDATE usuario " + " SET nombreUno = ?," + "     nombreDos = ?," + "     apellidoUno = ?,"
 					+ "     apellidoDos = ?," + "     email = ?," + "     fechaNac = ?," + "     celular = ?"
 					+ " WHERE documento = ? ";
-			return jdbcTemplate.update(SQL, usuarioDTO.getNombreUno(), usuarioDTO.getNombreDos(),
-					usuarioDTO.getApellidoUno(), usuarioDTO.getApellidoDos(), usuarioDTO.getEmail(),
-					usuarioDTO.getFechaNac(), usuarioDTO.getCelular(), usuarioDTO.getDocumento());
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setString(1, usuarioDTO.getNombreuno());
+					ps.setString(2, usuarioDTO.getNombredos());
+					ps.setString(3, usuarioDTO.getApellidouno());
+					ps.setString(4, usuarioDTO.getApellidodos());
+					ps.setString(5, usuarioDTO.getEmail());
+					ps.setDate(6, new java.sql.Date(usuarioDTO.getFechanac().getTime()));
+					ps.setLong(7, usuarioDTO.getCelular());
+					ps.setLong(8, usuarioDTO.getDocumento());
+				}
+			};
+			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl modificarUsuario: " + e.toString());
 			throw new Exception("Error al modificar el usuario");
@@ -58,10 +83,10 @@ public class UsuarioRepositoryImpl {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para eliminar usuarios por numero de documento
 	 */
-	public Integer eliminarUsuario(Integer documento) throws Exception {
+	public Integer eliminarUsuario(Long documento) throws Exception {
 		try {
 			String SQL = " DELETE FROM usuario WHERE documento = ? ";
-			return jdbcTemplate.update(SQL, documento);
+			return getJdbcTemplate().update(SQL, documento);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl eliminarUsuario: " + e.toString());
 			throw new Exception("Error al eliminar el usuario");
@@ -75,7 +100,8 @@ public class UsuarioRepositoryImpl {
 	public UsuarioDTO consultaUsuarioByDocumento(UsuarioDTO usuarioDTO) throws Exception {
 		try {
 			String SQL = " SELECT * FROM usuario WHERE documento = ? ";
-			return jdbcTemplate.queryForObject(SQL, consultaUsuarioByDocumentoRowMapper, usuarioDTO.getDocumento());
+			return getJdbcTemplate().queryForObject(SQL, consultaUsuarioByDocumentoRowMapper,
+					usuarioDTO.getDocumento());
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaUsuarioByDocumento: " + e.toString());
 			throw new Exception("Error al consultar el usuario");
@@ -88,15 +114,15 @@ public class UsuarioRepositoryImpl {
 			UsuarioDTO usuario = null;
 			try {
 				usuario = new UsuarioDTO();
-				usuario.setDocumento(rs.getString("documento"));
-				usuario.setNombreUno(rs.getString("nombreUno"));
-				usuario.setNombreDos(rs.getString("nombreDos"));
-				usuario.setApellidoUno(rs.getString("apellidoUno"));
-				usuario.setApellidoDos(rs.getString("apellidoDos"));
+				usuario.setDocumento(rs.getLong("documento"));
+				usuario.setNombreuno(rs.getString("nombreUno"));
+				usuario.setNombredos(rs.getString("nombreDos"));
+				usuario.setApellidouno(rs.getString("apellidoUno"));
+				usuario.setApellidodos(rs.getString("apellidoDos"));
 				usuario.setEmail(rs.getString("email"));
-				usuario.setFechaNac(rs.getDate("fechaNac"));
-				usuario.setCelular(rs.getString("celular"));
-				usuario.setFechaSys(rs.getDate("fechaSys"));
+				usuario.setFechanac(rs.getDate("fechaNac"));
+				usuario.setCelular(rs.getLong("celular"));
+				usuario.setFechasys(rs.getDate("fechaSys"));
 			} catch (Exception e) {
 				System.err.println("Exception UsuarioRepositoryImpl consultaUsuarioByDocumento_1: " + e.toString());
 			}
@@ -111,7 +137,7 @@ public class UsuarioRepositoryImpl {
 	public List<UsuarioDTO> consultaAllUsuario() throws Exception {
 		try {
 			String SQL = " SELECT * FROM usuario ";
-			return jdbcTemplate.query(SQL, consultaAllUsuarioRowMapper);
+			return getJdbcTemplate().query(SQL, consultaAllUsuarioRowMapper);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario: " + e.toString());
 			throw new Exception("Error al consultar los usuarios");
@@ -124,15 +150,15 @@ public class UsuarioRepositoryImpl {
 			UsuarioDTO usuario = null;
 			try {
 				usuario = new UsuarioDTO();
-				usuario.setDocumento(rs.getString("documento"));
-				usuario.setNombreUno(rs.getString("nombreUno"));
-				usuario.setNombreDos(rs.getString("nombreDos"));
-				usuario.setApellidoUno(rs.getString("apellidoUno"));
-				usuario.setApellidoDos(rs.getString("apellidoDos"));
+				usuario.setDocumento(rs.getLong("documento"));
+				usuario.setNombreuno(rs.getString("nombreUno"));
+				usuario.setNombredos(rs.getString("nombreDos"));
+				usuario.setApellidouno(rs.getString("apellidoUno"));
+				usuario.setApellidodos(rs.getString("apellidoDos"));
 				usuario.setEmail(rs.getString("email"));
-				usuario.setFechaNac(rs.getDate("fechaNac"));
-				usuario.setCelular(rs.getString("celular"));
-				usuario.setFechaSys(rs.getDate("fechaSys"));
+				usuario.setFechanac(rs.getDate("fechaNac"));
+				usuario.setCelular(rs.getLong("celular"));
+				usuario.setFechasys(rs.getDate("fechaSys"));
 			} catch (Exception e) {
 				System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario_1: " + e.toString());
 			}

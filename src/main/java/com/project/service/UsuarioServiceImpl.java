@@ -9,9 +9,8 @@ import com.project.DTO.UsuarioDTO;
 import com.project.repository.UsuarioRepositoryImpl;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
-	
-	
+public class UsuarioServiceImpl implements UsuarioService {
+
 	@Autowired
 	UsuarioRepositoryImpl usuarioRepositoryImpl;
 
@@ -38,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 	 * @Descripcion Método para eliminar usuarios por numero de documento
 	 */
 	@Override
-	public Integer eliminarUsuario(Integer documento) throws Exception {
+	public Integer eliminarUsuario(Long documento) throws Exception {
 		return usuarioRepositoryImpl.eliminarUsuario(documento);
 	}
 
