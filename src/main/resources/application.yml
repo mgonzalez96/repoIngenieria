@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: ingenieriasoftware06@gmail.com
-    password: Ingenieria2025*
+    password: ndkj znpt redq xpur
     properties:
       mail:
         smtp:

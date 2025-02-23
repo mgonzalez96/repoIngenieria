@@ -66,15 +66,35 @@ public class AccesoController {
 	}
 
 	@PostMapping("/olvidoPassword")
-	public ResponseEntity<AccesoDTO> olvidoPassword(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		accesoDTO = accesoService.recuperaAcceso(accesoDTO);
-		if (accesoDTO != null) {
-			accesoDTO.setAsunto(" Recuperación de Usuario y Contraseña");
-			accesoDTO
-					.setDescripcion("Usuario: " + accesoDTO.getUsername() + "\nContraseña: " + accesoDTO.getPassword());
-		}
-		accesoService.sendEmail(accesoDTO.getDocumento().getEmail(), accesoDTO.getAsunto(), accesoDTO.getDescripcion());
-		return ResponseEntity.ok(accesoDTO);
+	public ResponseEntity<Integer> olvidoPassword(@RequestBody AccesoDTO accesoDTO) throws Exception {
+		try {
+			accesoDTO = accesoService.recuperaAcceso(accesoDTO);
+			if (accesoDTO != null) {
+				String detalle = "";
+				accesoDTO.setAsunto("Recuperación Credencial ConéctateConCandelariaValle");
+				
+				detalle = "Cordial saludo";
+				detalle += "\n";
+				detalle += "\n";
+				detalle += "A continuación se encuentran los datos de acceso al App ConéctateConCandelariaValle";
+				detalle += "\n";
+				detalle += "\n";
+				detalle += "Usuario: "+ accesoDTO.getUsername();
+				detalle += "\n";
+				detalle += "Contraseña: "+ accesoDTO.getPassword();
+				detalle += "\n";
+				detalle += "\n";
+				detalle += "Este es un correo generado automáticamente, por favor abstenerse de responder este correo";
+				
+				accesoDTO
+						.setDescripcion(detalle);
+			}
+			accesoService.sendEmail(accesoDTO.getDocumento().getEmail(), accesoDTO.getAsunto(), accesoDTO.getDescripcion());
+			return ResponseEntity.ok(1);
+		} catch (Exception e) {
+			System.err.println("Exception AccesoController olvidoPassword: "+e.toString());
+			return ResponseEntity.ok(0);
+		}		
 	}
 
 }
