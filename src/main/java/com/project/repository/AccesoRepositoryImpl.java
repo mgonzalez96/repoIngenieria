@@ -57,8 +57,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception AccesoRepositoryImpl crearAccesoUsuario: " + e.toString());
-			e.printStackTrace();
-			throw new Exception("Error al crear el acceso del usuario");
+			throw new Exception("Usuario ya tiene un acceso");
 		}
 	}
 
@@ -132,7 +131,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 			return getJdbcTemplate().query(SQL, setter, new recuperaAccesoResult());
 		} catch (Exception e) {
 			System.err.println("Exception AccesoRepositoryImpl recuperaAcceso: " + e.toString());
-			throw new Exception("Error al recuperar el acceso del usuario");
+			throw new Exception("No existe usuario con el username ingresado");
 		}
 	}
 
@@ -205,7 +204,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para consultar los datos del acceso del usuario por documento
+	 * @Descripcion Método para consultar los datos del acceso del usuario por
+	 *              documento
 	 */
 	public AccesoDTO datosAcceso(UsuarioDTO usuario) throws Exception {
 		try {
@@ -224,7 +224,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 			return getJdbcTemplate().query(SQL, setter, new datosAccesoResult());
 		} catch (Exception e) {
 			System.err.println("Exception AccesoRepositoryImpl datosAcceso: " + e.toString());
-			throw new Exception("Usuario no encontrado");
+			throw new Exception("Usuario no existe por documento ingresado");
 		}
 	}
 

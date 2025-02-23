@@ -44,8 +44,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl crearUsuario: " + e.toString());
-			e.printStackTrace();
-			throw new Exception("Error al crear el usuario");
+			throw new Exception("Usuario ya existe");
 		}
 	}
 
@@ -103,7 +102,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 					usuarioDTO.getDocumento());
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaUsuarioByDocumento: " + e.toString());
-			throw new Exception("Error al consultar el usuario");
+			throw new Exception("Usuario no existe, valide el documento ingresado");
 		}
 	}
 
@@ -140,7 +139,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 			return getJdbcTemplate().query(SQL, consultaAllUsuarioRowMapper);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario: " + e.toString());
-			throw new Exception("Error al consultar los usuarios");
+			throw new Exception("No existen usuarios activos");
 		}
 	}
 
@@ -183,7 +182,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl activarUsuario: " + e.toString());
-			throw new Exception("Error al activar el usuario");
+			throw new Exception("Usuario no existe para activarlo");
 		}
 	}
 
