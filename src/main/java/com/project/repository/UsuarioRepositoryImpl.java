@@ -40,7 +40,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 					ps.setDate(7, new java.sql.Date(usuarioDTO.getFechanac().getTime()));
 					ps.setLong(8, usuarioDTO.getCelular());
 				}
-			};			
+			};
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl crearUsuario: " + e.toString());
@@ -84,9 +84,7 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer eliminarUsuario(Long documento) throws Exception {
 		try {
-			String SQL = " UPDATE public.usuario "
-					+ "	SET estado = 0 "
-					+ "	WHERE documento = ? ";
+			String SQL = " UPDATE public.usuario " + "	SET estado = 0 " + "	WHERE documento = ? ";
 			return getJdbcTemplate().update(SQL, documento);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl eliminarUsuario: " + e.toString());
@@ -166,5 +164,25 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 			return usuario;
 		}
 	};
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+		try {
+			String SQL = " UPDATE public.usuario " + "	SET estado = 1 " + "	WHERE documento = ? ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuarioDTO.getDocumento());
+				}
+			};
+			return getJdbcTemplate().update(SQL, setter);
+		} catch (Exception e) {
+			System.err.println("Exception UsuarioRepositoryImpl activarUsuario: " + e.toString());
+			throw new Exception("Error al activar el usuario");
+		}
+	}
 
 }

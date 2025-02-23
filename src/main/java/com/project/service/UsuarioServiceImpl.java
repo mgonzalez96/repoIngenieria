@@ -59,4 +59,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioRepositoryImpl.consultaAllUsuario();
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	@Override
+	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+		return usuarioRepositoryImpl.activarUsuario(usuarioDTO);
+	}
+
 }

@@ -66,4 +66,13 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioService.consultaAllUsuario());
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	@PutMapping("/activarUsuario")
+	public ResponseEntity<Integer> activarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
+		return ResponseEntity.ok(usuarioService.activarUsuario(usuarioDTO));
+	}
+
 }

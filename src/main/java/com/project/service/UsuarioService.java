@@ -35,5 +35,11 @@ public interface UsuarioService {
 	 * @Descripcion Método para consultar todos los usuarios
 	 */
 	public List<UsuarioDTO> consultaAllUsuario() throws Exception;
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception;
 
 }

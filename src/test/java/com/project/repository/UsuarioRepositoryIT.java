@@ -19,12 +19,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project.DTO.UsuarioDTO;
 
-
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
 @EnableAutoConfiguration
 class UsuarioRepositoryIT {
-	
+
 	@Autowired
 	UsuarioRepositoryImpl usuarioRepositoryImpl;
 
@@ -32,10 +31,10 @@ class UsuarioRepositoryIT {
 	void test() {
 		fail("Not yet implemented");
 	}
-	
+
 	@Test
 	@Order(1)
-	void crearUsuario()throws Exception {
+	void crearUsuario() throws Exception {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		UsuarioDTO usuario = new UsuarioDTO();
 		usuario.setDocumento(1113123451L);
@@ -44,16 +43,16 @@ class UsuarioRepositoryIT {
 		usuario.setApellidouno("Acevedo");
 		usuario.setApellidodos("Gonzalez");
 		usuario.setEmail("marianaacevedo1996@gmail.com");
-	    usuario.setFechanac(format.parse("18/07/1996"));
-	    usuario.setCelular(3151234585L);
-	    usuario.setFechasys(new Date());
-	    	    
-	    assertNotNull(usuarioRepositoryImpl.crearUsuario(usuario), "Usuario creado");
+		usuario.setFechanac(format.parse("18/07/1996"));
+		usuario.setCelular(3151234585L);
+		usuario.setFechasys(new Date());
+
+		assertNotNull(usuarioRepositoryImpl.crearUsuario(usuario), "Usuario creado");
 	}
-	
+
 	@Test
 	@Order(2)
-	void modificarUsuario()throws Exception {
+	void modificarUsuario() throws Exception {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		UsuarioDTO usuario = new UsuarioDTO();
 		usuario.setDocumento(1113123451L);
@@ -62,43 +61,55 @@ class UsuarioRepositoryIT {
 		usuario.setApellidouno("Gonzalez");
 		usuario.setApellidodos("Acevedo");
 		usuario.setEmail("correoprueba@gmail.com");
-	    usuario.setFechanac(format.parse("18/08/1996"));
-	    usuario.setCelular(3151234500L);
-	    
-	    Integer resultado = 0;
-	    resultado = usuarioRepositoryImpl.modificarUsuario(usuario);
-	    
-	    assertNotNull(resultado, "Usuario modificado");
+		usuario.setFechanac(format.parse("18/08/1996"));
+		usuario.setCelular(3151234500L);
+
+		Integer resultado = 0;
+		resultado = usuarioRepositoryImpl.modificarUsuario(usuario);
+
+		assertNotNull(resultado, "Usuario modificado");
 	}
-	
+
 	@Test
 	@Order(3)
-	void eliminarUsuario()throws Exception {
-	    Integer resultado = 0;
-	    resultado = usuarioRepositoryImpl.eliminarUsuario(1113123451L);
-	    
-	    assertNotNull(resultado, "Usuario eliminado");
+	void eliminarUsuario() throws Exception {
+		Integer resultado = 0;
+		resultado = usuarioRepositoryImpl.eliminarUsuario(1113123451L);
+
+		assertNotNull(resultado, "Usuario eliminado");
 	}
-	
+
 	@Test
 	@Order(4)
-	void consultaUsuarioByDocumento()throws Exception {
+	void consultaUsuarioByDocumento() throws Exception {
 		UsuarioDTO usuario = new UsuarioDTO();
 		usuario.setDocumento(1113123457L);
-		
+
 		usuario = usuarioRepositoryImpl.consultaUsuarioByDocumento(usuario);
-	    
-	    assertNotNull(usuario, "Usuario consultado por documento");
+
+		assertNotNull(usuario, "Usuario consultado por documento");
 	}
-	
+
 	@Test
 	@Order(5)
-	void consultaAllUsuario()throws Exception {
+	void consultaAllUsuario() throws Exception {
 		List<UsuarioDTO> lista = new ArrayList<>();
-		
+
 		lista = usuarioRepositoryImpl.consultaAllUsuario();
-	    
-	    assertFalse(lista.isEmpty(), "Usuarios consultados");
+
+		assertFalse(lista.isEmpty(), "Usuarios consultados");
+	}
+
+	@Test
+	@Order(6)
+	void activarUsuario() throws Exception {
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setCelular(3151234500L);
+
+		Integer resultado = 0;
+		resultado = usuarioRepositoryImpl.activarUsuario(usuario);
+
+		assertNotNull(resultado, "Usuario activo");
 	}
 
 }
