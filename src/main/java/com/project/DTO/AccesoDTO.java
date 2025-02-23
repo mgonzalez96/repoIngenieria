@@ -3,7 +3,7 @@ package com.project.DTO;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.project.domain.Usuario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,15 +16,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AccesoDTO implements Serializable{
-	
-	
+public class AccesoDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
-	private Integer idAcceso;
-	private Usuario documento;
+
+	private Long idacceso;
+	private UsuarioDTO documento = new UsuarioDTO();
 	private String username;
-	private Byte[] password;
-	private Date fechaSys;
+	private String password;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", locale = "es-CO", timezone = "America/Lima")
+	private Date fechasys;
 
 }
