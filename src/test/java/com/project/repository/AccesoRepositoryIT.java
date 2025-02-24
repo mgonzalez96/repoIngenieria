@@ -53,6 +53,8 @@ class AccesoRepositoryIT {
 	void recuperaAcceso() throws Exception {
 		AccesoDTO acceso = new AccesoDTO();
 		acceso.setUsername("1113123457");
+		//UsuarioDTO usuario = new UsuarioDTO();
+		//usuario.setDocumento(1113123457L);
 
 		acceso = accesoRepositoryImpl.recuperaAcceso(acceso);
 

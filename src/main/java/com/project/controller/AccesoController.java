@@ -69,6 +69,7 @@ public class AccesoController {
 	@PostMapping("/olvidoPassword")
 	public ResponseEntity<Integer> olvidoPassword(@RequestBody AccesoDTO accesoDTO) throws Exception {
 		try {
+			//AccesoDTO accesoDTO = new AccesoDTO();
 			accesoDTO = accesoService.recuperaAcceso(accesoDTO);
 			if (accesoDTO != null) {
 				String detalle = "";

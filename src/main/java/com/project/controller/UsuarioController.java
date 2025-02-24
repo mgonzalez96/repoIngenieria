@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.project.DTO.AccesoDTO;
 import com.project.DTO.UsuarioDTO;
+import com.project.service.AccesoService;
 import com.project.service.UsuarioService;
 
 @RestController
@@ -18,14 +21,22 @@ public class UsuarioController {
 
 	@Autowired
 	UsuarioService usuarioService;
+	
+	@Autowired
+	AccesoService accesoService;
 
 	/**
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para crear usuarios
 	 */
 	@PostMapping("/crearUsuario")
-	public ResponseEntity<Integer> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
-		return ResponseEntity.ok(usuarioService.crearUsuario(usuarioDTO));
+	public ResponseEntity<Integer> crearUsuario(@RequestBody AccesoDTO acceso) throws Exception {
+		Integer retorno = 0;
+		retorno = usuarioService.crearUsuario(acceso.getDocumento());
+		if(retorno == 1) {
+			retorno = accesoService.crearAccesoUsuario(acceso);
+		}
+		return ResponseEntity.ok(retorno);
 	}
 
 	/**

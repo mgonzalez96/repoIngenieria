@@ -41,7 +41,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = " INSERT INTO public.acceso( "
 					+ "	idacceso, documento, username, password, fechasys, estado, perfil) "
-					+ "	VALUES (nextval('sec_acceso'), ?, ?, ?, CURRENT_TIMESTAMP, 1, ?) ";
+					+ "	VALUES (nextval('sec_acceso'), ?, ?, ?, CURRENT_TIMESTAMP, 1, 'USER') ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -49,7 +49,6 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 					ps.setLong(1, accesoDTO.getDocumento().getDocumento());
 					ps.setString(2, accesoDTO.getUsername());
 					ps.setString(3, accesoDTO.getPassword());
-					ps.setString(4, accesoDTO.getPerfil());
 					// TODO Cifrado de contraseña para la proxima entrega
 					// ps.setString(3, passwordEncoder.encode(accesoDTO.getPassword()));
 				}
