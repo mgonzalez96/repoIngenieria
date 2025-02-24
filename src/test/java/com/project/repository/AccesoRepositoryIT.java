@@ -95,7 +95,7 @@ class AccesoRepositoryIT {
 	@Order(7)
 	void activarUsuario() throws Exception {
 		UsuarioDTO usuario = new UsuarioDTO();
-		usuario.setCelular(3151234500L);
+		usuario.setDocumento(1113123457L);
 
 		Integer resultado = 0;
 		resultado = accesoRepositoryImpl.activarUsuario(usuario);

@@ -30,13 +30,9 @@ public class UsuarioController {
 	 * @Descripcion Método para crear usuarios
 	 */
 	@PostMapping("/crearUsuario")
-	public ResponseEntity<Integer> crearUsuario(@RequestBody AccesoDTO acceso) throws Exception {
-		Integer retorno = 0;
-		retorno = usuarioService.crearUsuario(acceso.getDocumento());
-		if(retorno == 1) {
-			retorno = accesoService.crearAccesoUsuario(acceso);
-		}
-		return ResponseEntity.ok(retorno);
+	public ResponseEntity<Integer> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
+		
+		return ResponseEntity.ok(usuarioService.crearUsuario(usuarioDTO));
 	}
 
 	/**
