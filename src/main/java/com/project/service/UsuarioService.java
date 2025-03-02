@@ -2,7 +2,7 @@ package com.project.service;
 
 import java.util.List;
 
-import com.project.DTO.UsuarioDTO;
+import com.project.dto.UsuarioDTO;
 
 public interface UsuarioService {
 

@@ -14,8 +14,8 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import com.project.DTO.AccesoDTO;
-import com.project.DTO.UsuarioDTO;
+import com.project.dto.AccesoDTO;
+import com.project.dto.UsuarioDTO;
 
 @Repository
 public class AccesoRepositoryImpl extends JdbcDaoSupport {

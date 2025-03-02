@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.project.DTO.AccesoDTO;
-import com.project.DTO.UsuarioDTO;
+import com.project.dto.AccesoDTO;
+import com.project.dto.UsuarioDTO;
 
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)

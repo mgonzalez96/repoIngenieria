@@ -1,7 +1,7 @@
 package com.project.service;
 
-import com.project.DTO.AccesoDTO;
-import com.project.DTO.UsuarioDTO;
+import com.project.dto.AccesoDTO;
+import com.project.dto.UsuarioDTO;
 
 public interface AccesoService {
 

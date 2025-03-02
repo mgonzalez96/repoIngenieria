@@ -9,7 +9,8 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
-import com.project.DTO.UsuarioDTO;
+
+import com.project.dto.UsuarioDTO;
 
 @Repository
 public class UsuarioRepositoryImpl extends JdbcDaoSupport {

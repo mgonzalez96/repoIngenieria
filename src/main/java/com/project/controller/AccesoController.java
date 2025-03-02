@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.DTO.AccesoDTO;
-import com.project.DTO.UsuarioDTO;
+import com.project.dto.AccesoDTO;
+import com.project.dto.UsuarioDTO;
 import com.project.service.AccesoService;
 
 @RestController

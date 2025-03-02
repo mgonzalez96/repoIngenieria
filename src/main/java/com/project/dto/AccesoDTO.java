@@ -1,4 +1,4 @@
-package com.project.domain;
+package com.project.dto;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,20 +16,20 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Usuario implements Serializable {
+public class AccesoDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String documento;
-	private String nombreUno;
-	private String nombreDos;
-	private String apellidoUno;
-	private String apellidoDos;
-	private String email;
-	@JsonFormat(pattern = "yyyy-MM-dd", locale = "es-CO", timezone = "America/Lima")
-	private Date fechaNac;
-	private String celular;
+	private Long idacceso;
+	private UsuarioDTO documento = new UsuarioDTO();
+	private String username;
+	private String password;
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", locale = "es-CO", timezone = "America/Lima")
-	private Date fechaSys;
+	private Date fechasys;
+	private Integer estado;
+	private String perfil;
+	//------Add por lógica---------------//
+	private String asunto;
+	private String descripcion;
 
 }
