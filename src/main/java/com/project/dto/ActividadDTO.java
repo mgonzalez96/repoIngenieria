@@ -27,5 +27,8 @@ public class ActividadDTO implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", locale = "es-CO", timezone = "America/Lima")
 	private Date actifefi;
 	private Integer actiesta;
+	private String actiface;
+	private String actiurlx;
+	private String actiinst;
 
 }

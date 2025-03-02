@@ -27,8 +27,8 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 	public List<ActividadDTO> consultaAllActividad() throws Exception {
 		try {
 			String SQL = " SELECT acticodi, actinomb, actidesc, actiimag, actifein fechainicio, "
-					+ "       actifefi fechafin, t.evencodi, t.evennomb evento, "
-					+ "	   u.ubiccodi, u.ubicnomb ubicacion "
+					+ "       actifefi fechafin, a.actiface, a.actiurlx, a.actiinst, "
+					+ " t.evencodi, t.evennomb evento, " + "	   u.ubiccodi, u.ubicnomb ubicacion "
 					+ " FROM public.actividad a, public.ubicacion u, public.tipoevento t "
 					+ " WHERE u.ubiccodi = a.ubiccodi " + " AND t.evencodi = a.evencodi " + " AND a.actiesta = 1 ";
 			return getJdbcTemplate().query(SQL, consultaAllActividadRowMapper);
@@ -50,6 +50,9 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 				actividadDTO.setActiimag(rs.getString("actiimag"));
 				actividadDTO.setActifein(rs.getDate("fechainicio"));
 				actividadDTO.setActifefi(rs.getDate("fechafin"));
+				actividadDTO.setActiface(rs.getString("actiface"));
+				actividadDTO.setActiurlx(rs.getString("actiurlx"));
+				actividadDTO.setActiinst(rs.getString("actiinst"));
 				actividadDTO.getEvencodi().setEvencodi(rs.getInt("evencodi"));
 				actividadDTO.getEvencodi().setEvennomb(rs.getString("evento"));
 				actividadDTO.getUbiccodi().setUbiccodi(rs.getInt("ubiccodi"));
@@ -70,8 +73,9 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearActividad(ActividadDTO actividadDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.actividad("
-					+ "	acticodi, actinomb, actidesc, actiimag, evencodi, ubiccodi, actifein, actifefi, actiesta) "
-					+ "	VALUES (nextval('sec_actividad'), ?, ?, ?, ?, ?, ?, ?, 1) ";
+					+ "	acticodi, actinomb, actidesc, actiimag, evencodi, ubiccodi, actifein, actifefi, actiesta,"
+					+ "actiface, actiurlx, actiinst) "
+					+ "	VALUES (nextval('sec_actividad'), ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -83,6 +87,9 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 					ps.setInt(5, actividadDTO.getUbiccodi().getUbiccodi());
 					ps.setDate(6, new java.sql.Date(actividadDTO.getActifein().getTime()));
 					ps.setDate(7, new java.sql.Date(actividadDTO.getActifefi().getTime()));
+					ps.setString(8, actividadDTO.getActiface());
+					ps.setString(9, actividadDTO.getActiurlx());
+					ps.setString(10, actividadDTO.getActiinst());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
@@ -100,7 +107,8 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 	public Integer modificarActividad(ActividadDTO actividadDTO) throws Exception {
 		try {
 			String SQL = " UPDATE public.actividad  " + "	SET actinomb=?, actidesc=?,   "
-					+ "	    actiimag=?, evencodi=?, ubiccodi=?,   " + "		actifein=?, actifefi=?  "
+					+ "	    actiimag=?, evencodi=?, ubiccodi=?,   " + "		actifein=?, actifefi=?,"
+					+ "     actiface = ?, actiurlx = ?, actiinst = ?  " 
 					+ "	WHERE acticodi=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
@@ -112,8 +120,11 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 					ps.setInt(4, actividadDTO.getEvencodi().getEvencodi());
 					ps.setInt(5, actividadDTO.getUbiccodi().getUbiccodi());
 					ps.setDate(6, new java.sql.Date(actividadDTO.getActifein().getTime()));
-					ps.setDate(7, new java.sql.Date(actividadDTO.getActifefi().getTime()));
-					ps.setInt(8, actividadDTO.getActicodi());
+					ps.setDate(7, new java.sql.Date(actividadDTO.getActifefi().getTime()));					
+					ps.setString(8, actividadDTO.getActiface());
+					ps.setString(9, actividadDTO.getActiurlx());
+					ps.setString(10, actividadDTO.getActiinst());
+					ps.setInt(11, actividadDTO.getActicodi());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
