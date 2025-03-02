@@ -28,8 +28,8 @@ public class ActividadServiceImpl implements ActividadService {
 	 * @Descripcion Método para listar todas las actividades con estado activo
 	 */
 	@Override
-	public List<ActividadDTO> consultaAllActividad() throws Exception {
-		return actividadRepositoryImpl.consultaAllActividad();
+	public List<ActividadDTO> consultaAllActividad(ActividadDTO actividadDTO) throws Exception {
+		return actividadRepositoryImpl.consultaAllActividad(actividadDTO);
 	}
 
 	/**

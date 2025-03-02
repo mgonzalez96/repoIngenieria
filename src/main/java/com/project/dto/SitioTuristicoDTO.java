@@ -16,6 +16,13 @@ public class SitioTuristicoDTO implements Serializable {
 	private String turinomb;
 	private String turidire;
 	private String turiimag;
-	private Integer ubicodi;
+	private UbicacionDTO ubiccodi = new UbicacionDTO();
+	private Integer turiesta;
+	private String turiestaStr;
+	private Integer turilike;
+	private String turiface;
+	private String turiurlx;
+	private String turiinst;
+	
 
 }

@@ -16,5 +16,10 @@ public class GastronomiaDTO implements Serializable {
 	private String gastnomb;
 	private String gastdesc;
 	private String gastimag;
+	private String gastface;
+	private String gasturlx;
+	private String gastinst;
+	private Integer gastesta;
+	private String gastestaStr;
 
 }

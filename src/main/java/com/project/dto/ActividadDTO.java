@@ -30,5 +30,6 @@ public class ActividadDTO implements Serializable {
 	private String actiface;
 	private String actiurlx;
 	private String actiinst;
+	private String actiestaStr;
 
 }

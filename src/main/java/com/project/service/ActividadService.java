@@ -16,7 +16,7 @@ public interface ActividadService {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para listar todas las actividades con estado activo
 	 */
-	public List<ActividadDTO> consultaAllActividad() throws Exception;
+	public List<ActividadDTO> consultaAllActividad(ActividadDTO actividadDTO) throws Exception;
 
 	/**
 	 * @Usuario Mariana Acevedo

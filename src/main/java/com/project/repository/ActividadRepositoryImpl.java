@@ -24,14 +24,20 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para listar todas las actividades con estado activo
 	 */
-	public List<ActividadDTO> consultaAllActividad() throws Exception {
+	public List<ActividadDTO> consultaAllActividad(ActividadDTO actividadDTO) throws Exception {
 		try {
 			String SQL = " SELECT acticodi, actinomb, actidesc, actiimag, actifein fechainicio, "
 					+ "       actifefi fechafin, a.actiface, a.actiurlx, a.actiinst, "
-					+ " t.evencodi, t.evennomb evento, " + "	   u.ubiccodi, u.ubicnomb ubicacion "
+					+ " t.evencodi, t.evennomb evento, " + "	   u.ubiccodi, u.ubicnomb ubicacion, a.actiesta "
 					+ " FROM public.actividad a, public.ubicacion u, public.tipoevento t "
-					+ " WHERE u.ubiccodi = a.ubiccodi " + " AND t.evencodi = a.evencodi " + " AND a.actiesta = 1 ";
-			return getJdbcTemplate().query(SQL, consultaAllActividadRowMapper);
+					+ " WHERE u.ubiccodi = a.ubiccodi " + " AND t.evencodi = a.evencodi " + " AND a.actiesta = ? ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setInt(1, actividadDTO.getActiesta());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, consultaAllActividadRowMapper);
 		} catch (Exception e) {
 			System.err.println("Exception ActividadRepositoryImpl consultaAllActividad: " + e.toString());
 			throw new Exception("No existen actividades");
@@ -57,7 +63,12 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 				actividadDTO.getEvencodi().setEvennomb(rs.getString("evento"));
 				actividadDTO.getUbiccodi().setUbiccodi(rs.getInt("ubiccodi"));
 				actividadDTO.getUbiccodi().setUbicnomb(rs.getString("ubicacion"));
-				actividadDTO.setActiesta(1);
+				actividadDTO.setActiesta(rs.getInt("actiesta"));
+				if (actividadDTO.getActiesta() == 1) {
+					actividadDTO.setActiestaStr("Activo");
+				} else {
+					actividadDTO.setActiestaStr("Inactivo");
+				}
 			} catch (Exception e) {
 				System.err.println("Exception ActividadRepositoryImpl consultaAllActividad_1: " + e.toString());
 			}
@@ -108,8 +119,7 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = " UPDATE public.actividad  " + "	SET actinomb=?, actidesc=?,   "
 					+ "	    actiimag=?, evencodi=?, ubiccodi=?,   " + "		actifein=?, actifefi=?,"
-					+ "     actiface = ?, actiurlx = ?, actiinst = ?  " 
-					+ "	WHERE acticodi=? ";
+					+ "     actiface = ?, actiurlx = ?, actiinst = ?  " + "	WHERE acticodi=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -120,7 +130,7 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 					ps.setInt(4, actividadDTO.getEvencodi().getEvencodi());
 					ps.setInt(5, actividadDTO.getUbiccodi().getUbiccodi());
 					ps.setDate(6, new java.sql.Date(actividadDTO.getActifein().getTime()));
-					ps.setDate(7, new java.sql.Date(actividadDTO.getActifefi().getTime()));					
+					ps.setDate(7, new java.sql.Date(actividadDTO.getActifefi().getTime()));
 					ps.setString(8, actividadDTO.getActiface());
 					ps.setString(9, actividadDTO.getActiurlx());
 					ps.setString(10, actividadDTO.getActiinst());
