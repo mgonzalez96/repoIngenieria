@@ -15,8 +15,8 @@ public class CalificacionDTO implements Serializable {
 
 	private Integer calicodi;
 	private Date califech;
-	private String caliuser;
-	private Integer tipocodi;
+	private UsuarioDTO caliuser = new UsuarioDTO();
+	private TipoCalificacionDTO tipocodi = new TipoCalificacionDTO();
 	private String caliobse;
 
 }

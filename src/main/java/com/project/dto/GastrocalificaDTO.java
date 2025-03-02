@@ -13,7 +13,7 @@ public class GastrocalificaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer gacacodi;
-	private Integer calicodi;
-	private Integer gastcodi;
+	private CalificacionDTO calicodi = new CalificacionDTO();
+	private GastronomiaDTO gastcodi = new GastronomiaDTO();
 
 }
