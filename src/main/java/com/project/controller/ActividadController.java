@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,24 @@ public class ActividadController {
 	@GetMapping("/consultaAllActividad")
 	public ResponseEntity<List<ActividadDTO>> consultaAllActividad() throws Exception {
 		return ResponseEntity.ok(actividadService.consultaAllActividad());
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para modificar las actividades
+	 */
+	@PutMapping("/modificarActividad")
+	public ResponseEntity<Integer> modificarActividad(@RequestBody ActividadDTO actividadDTO) throws Exception {
+		return ResponseEntity.ok(actividadService.modificarActividad(actividadDTO));
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para inactivar una actividad por codigo
+	 */
+	@PutMapping("/inactivarActividad")
+	public ResponseEntity<Integer> inactivarActividad(@RequestBody ActividadDTO actividadDTO) throws Exception {
+		return ResponseEntity.ok(actividadService.inactivarActividad(actividadDTO.getActicodi()));
 	}
 
 }

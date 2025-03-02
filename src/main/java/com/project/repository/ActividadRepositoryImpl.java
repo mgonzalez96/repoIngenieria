@@ -11,9 +11,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
-
 import com.project.dto.ActividadDTO;
-import com.project.dto.TipoEventoDTO;
 
 @Repository
 public class ActividadRepositoryImpl extends JdbcDaoSupport {
@@ -97,46 +95,53 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 // -------------------------------------------------------------------------------------
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para modificar el tipo de evento
+	 * @Descripcion Método para modificar las actividades
 	 */
-	public Integer modificarTipoEvento(TipoEventoDTO tipoEventoDTO) throws Exception {
+	public Integer modificarActividad(ActividadDTO actividadDTO) throws Exception {
 		try {
-			String SQL = " UPDATE public.tipoevento " + "	SET evennomb=? " + "	WHERE evencodi = ? ";
+			String SQL = " UPDATE public.actividad  " + "	SET actinomb=?, actidesc=?,   "
+					+ "	    actiimag=?, evencodi=?, ubiccodi=?,   " + "		actifein=?, actifefi=?  "
+					+ "	WHERE acticodi=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setString(1, tipoEventoDTO.getEvennomb());
-					ps.setInt(2, tipoEventoDTO.getEvencodi());
+					ps.setString(1, actividadDTO.getActinomb());
+					ps.setString(2, actividadDTO.getActidesc());
+					ps.setString(3, actividadDTO.getActiimag());
+					ps.setInt(4, actividadDTO.getEvencodi().getEvencodi());
+					ps.setInt(5, actividadDTO.getUbiccodi().getUbiccodi());
+					ps.setDate(6, new java.sql.Date(actividadDTO.getActifein().getTime()));
+					ps.setDate(7, new java.sql.Date(actividadDTO.getActifefi().getTime()));
+					ps.setInt(8, actividadDTO.getActicodi());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
-			System.err.println("Exception TipoEventoRepositoryImpl modificarTipoEvento: " + e.toString());
-			throw new Exception("Tipo de Evento no existe");
+			System.err.println("Exception ActividadRepositoryImpl modificarActividad: " + e.toString());
+			throw new Exception("Actividad no existe");
 		}
 	}
 
 // -------------------------------------------------------------------------------------
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para modificar el tipo de evento
+	 * @Descripcion Método para inactivar una actividad por codigo
 	 */
-	public Integer eliminarTipoEvento(Integer evencodi) throws Exception {
+	public Integer inactivarActividad(Integer acticodi) throws Exception {
 		try {
-			String SQL = " DELETE FROM public.tipoevento WHERE evencodi = ? ";
+			String SQL = " UPDATE public.actividad SET actiesta = 0 WHERE acticodi=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, evencodi);
+					ps.setInt(1, acticodi);
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
-			System.err.println("Exception TipoEventoRepositoryImpl eliminarTipoEvento: " + e.toString());
-			throw new Exception("Tipo de Evento no existe para ser eliminado");
+			System.err.println("Exception ActividadRepositoryImpl inactivarActividad: " + e.toString());
+			throw new Exception("Actividad no existe para inactivarla");
 		}
 	}
-
 }

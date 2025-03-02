@@ -32,4 +32,22 @@ public class ActividadServiceImpl implements ActividadService {
 		return actividadRepositoryImpl.consultaAllActividad();
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para modificar las actividades
+	 */
+	@Override
+	public Integer modificarActividad(ActividadDTO actividadDTO) throws Exception {
+		return actividadRepositoryImpl.modificarActividad(actividadDTO);
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para inactivar una actividad por codigo
+	 */
+	@Override
+	public Integer inactivarActividad(Integer acticodi) throws Exception {
+		return actividadRepositoryImpl.inactivarActividad(acticodi);
+	}
+
 }
