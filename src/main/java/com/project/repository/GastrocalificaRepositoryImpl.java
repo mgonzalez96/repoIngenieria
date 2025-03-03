@@ -46,7 +46,7 @@ public class GastrocalificaRepositoryImpl extends JdbcDaoSupport {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para listar los platos tipicos de la region
+	 * @Descripcion Método para listar la calificacion, gastronomia y usuario
 	 */
 	public List<GastrocalificaDTO> consultaCalificaGastronomia() throws Exception {
 		try {
@@ -88,5 +88,6 @@ public class GastrocalificaRepositoryImpl extends JdbcDaoSupport {
 			return gastronomia;
 		}
 	};
+
 
 }

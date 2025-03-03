@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
+import com.project.dto.GastrocalificaDTO;
 import com.project.dto.GastronomiaDTO;
 
 @Repository
@@ -25,10 +26,14 @@ public class GastronomiaRepositoryImpl extends JdbcDaoSupport {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para listar los platos tipicos de la region
 	 */
-	public List<GastronomiaDTO> consultaAllGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
+	public List<GastrocalificaDTO> consultaAllGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
 		try {
-			String SQL = " SELECT gastcodi, gastnomb, gastdesc, gastimag, gastface, gasturlx, gastinst, gastesta "
-					+ "	FROM public.gastronomia " + " WHERE gastesta = ?";
+			String SQL = " SELECT g.gastcodi, g.gastnomb, g.gastdesc, g.gastimag, g.gastface,  "
+					+ "       g.gasturlx, g.gastinst, g.gastesta, "
+					+ "       c.calicodi, c.califech, c.caliobse, tc.tiponomb calificacion "
+					+ " FROM public.gastronomia g, public.gastrocalifica gc, public.calificacion c, "
+					+ "     public.tipocalificacion tc " + " WHERE g.gastcodi = gc.gastcodi "
+					+ " AND c.calicodi = gc.calicodi " + " AND tc.tipocodi = c.tipocodi " + " AND gastesta = ?";
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
@@ -42,25 +47,29 @@ public class GastronomiaRepositoryImpl extends JdbcDaoSupport {
 		}
 	}
 
-	private RowMapper<GastronomiaDTO> consultaAllGastronomiaRowMapper = new RowMapper<GastronomiaDTO>() {
+	private RowMapper<GastrocalificaDTO> consultaAllGastronomiaRowMapper = new RowMapper<GastrocalificaDTO>() {
 		@Override
-		public GastronomiaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-			GastronomiaDTO gastronomia = null;
+		public GastrocalificaDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			GastrocalificaDTO gastronomia = null;
 			try {
-				gastronomia = new GastronomiaDTO();
-				gastronomia.setGastcodi(rs.getInt("gastcodi"));
-				gastronomia.setGastnomb(rs.getString("gastnomb"));
-				gastronomia.setGastdesc(rs.getString("gastdesc"));
-				gastronomia.setGastimag(rs.getString("gastimag"));
-				gastronomia.setGastface(rs.getString("gastface"));
-				gastronomia.setGasturlx(rs.getString("gasturlx"));
-				gastronomia.setGastinst(rs.getString("gastinst"));
-				gastronomia.setGastesta(rs.getInt("gastesta"));
-				if (gastronomia.getGastesta() == 1) {
-					gastronomia.setGastestaStr("Activo");
+				gastronomia = new GastrocalificaDTO();
+				gastronomia.getGastcodi().setGastcodi(rs.getInt("gastcodi"));
+				gastronomia.getGastcodi().setGastnomb(rs.getString("gastnomb"));
+				gastronomia.getGastcodi().setGastdesc(rs.getString("gastdesc"));
+				gastronomia.getGastcodi().setGastimag(rs.getString("gastimag"));
+				gastronomia.getGastcodi().setGastface(rs.getString("gastface"));
+				gastronomia.getGastcodi().setGasturlx(rs.getString("gasturlx"));
+				gastronomia.getGastcodi().setGastinst(rs.getString("gastinst"));
+				gastronomia.getGastcodi().setGastesta(rs.getInt("gastesta"));
+				if (gastronomia.getGastcodi().getGastesta() == 1) {
+					gastronomia.getGastcodi().setGastestaStr("Activo");
 				} else {
-					gastronomia.setGastestaStr("Inactiva");
+					gastronomia.getGastcodi().setGastestaStr("Inactiva");
 				}
+				gastronomia.getCalicodi().setCalicodi(rs.getInt("calicodi"));
+				gastronomia.getCalicodi().setCalifech(rs.getTimestamp("califech"));
+				gastronomia.getCalicodi().setCaliobse(rs.getString("caliobse"));
+				gastronomia.getCalicodi().getTipocodi().setTiponomb(rs.getString("calificacion"));
 			} catch (Exception e) {
 				System.err.println("Exception GastronomiaRepositoryImpl consultaAllGastronomia_1: " + e.toString());
 			}

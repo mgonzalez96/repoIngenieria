@@ -24,7 +24,7 @@ public class CalificacionRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer crearCalificacion(CalificacionDTO calificacionDTO) throws Exception {
 		try {
-			String SQL = " INSERT INTO public.calificacion(" + "	calicodi, califech, caliuser, tipocodi, caliobse)"
+			String SQL = " INSERT INTO public.calificacion(calicodi, califech, caliuser, tipocodi, caliobse)"
 					+ "	VALUES (nextval('sec_calificacion'), CURRENT_TIMESTAMP, ?, ?, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
@@ -38,6 +38,7 @@ public class CalificacionRepositoryImpl extends JdbcDaoSupport {
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception CalificacionRepositoryImpl crearCalificacion: " + e.toString());
+			e.printStackTrace();
 			throw new Exception("Calificacion ya existe");
 		}
 	}

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.dto.GastrocalificaDTO;
 import com.project.dto.GastronomiaDTO;
 import com.project.service.GastronomiaService;
 
@@ -25,7 +26,7 @@ public class GastronomiaController {
 	 * @Descripcion Método para listar los platos tipicos de la region
 	 */
 	@PostMapping("/consultaAllGastronomia")
-	public ResponseEntity<List<GastronomiaDTO>> consultaAllGastronomia(@RequestBody GastronomiaDTO gastronomiaDTO)
+	public ResponseEntity<List<GastrocalificaDTO>> consultaAllGastronomia(@RequestBody GastronomiaDTO gastronomiaDTO)
 			throws Exception {
 		return ResponseEntity.ok(gastronomiaService.consultaAllGastronomia(gastronomiaDTO));
 	}
