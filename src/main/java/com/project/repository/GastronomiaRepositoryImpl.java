@@ -28,12 +28,17 @@ public class GastronomiaRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public List<GastrocalificaDTO> consultaAllGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
 		try {
-			String SQL = " SELECT g.gastcodi, g.gastnomb, g.gastdesc, g.gastimag, g.gastface,  "
-					+ "       g.gasturlx, g.gastinst, g.gastesta, "
-					+ "       c.calicodi, c.califech, c.caliobse, tc.tiponomb calificacion "
-					+ " FROM public.gastronomia g, public.gastrocalifica gc, public.calificacion c, "
-					+ "     public.tipocalificacion tc " + " WHERE g.gastcodi = gc.gastcodi "
-					+ " AND c.calicodi = gc.calicodi " + " AND tc.tipocodi = c.tipocodi " + " AND gastesta = ?";
+			String SQL = " SELECT g.gastcodi, g.gastnomb, g.gastdesc, g.gastimag, g.gastface,    "
+					+ "      g.gasturlx, g.gastinst, g.gastesta,   "
+					+ "      c.calicodi, c.califech, c.caliobse, tc.tiponomb calificacion  "
+					+ " FROM public.gastronomia g  "
+					+ " LEFT JOIN public.gastrocalifica gc  "
+					+ " ON g.gastcodi = gc.gastcodi  "
+					+ " LEFT JOIN public.calificacion c  "
+					+ " ON c.calicodi = gc.calicodi   "
+					+ " LEFT JOIN public.tipocalificacion tc   "
+					+ " ON tc.tipocodi = c.tipocodi  "
+					+ " WHERE  gastesta = ? ";
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
