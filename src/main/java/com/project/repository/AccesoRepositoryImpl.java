@@ -20,12 +20,6 @@ import com.project.dto.UsuarioDTO;
 @Repository
 public class AccesoRepositoryImpl extends JdbcDaoSupport {
 
-	// TODO Esta instancia se comentarea, en la proxima entrega implementar el
-	// cifrado de la contraseña
-	/*
-	 * @Autowired private static final BCryptPasswordEncoder passwordEncoder = new
-	 * BCryptPasswordEncoder();
-	 */
 
 	public AccesoDTO acceso = new AccesoDTO();
 
@@ -69,7 +63,10 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	public AccesoDTO validaAcceso(AccesoDTO accesoDTO) throws Exception {
 		acceso = accesoDTO;
 		try {
-			String SQL = " SELECT username, password, perfil " + "	FROM public.acceso " + "	WHERE username = ? ";
+			String SQL = " SELECT u.documento, a.username, a.password, a.perfil   "
+					+ "FROM public.acceso a, public.usuario u   "
+					+ "WHERE u.documento = a.documento   "
+					+ "AND a.username = ? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -90,22 +87,21 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 			AccesoDTO accesoDTO = null;
 			while (rs.next()) {
 				accesoDTO = new AccesoDTO();
+				accesoDTO.getDocumento().setDocumento(rs.getLong("documento"));
 				accesoDTO.setUsername(rs.getString("username"));
 				accesoDTO.setPassword(rs.getString("password"));
-				accesoDTO.setPerfil(rs.getString("perfil"));
+				accesoDTO.setPerfil(rs.getString("perfil"));				
 				try {
-					// TODO Cifrado de contraseña para la proxima entrega
-					/*
-					 * if (!passwordEncoder.matches(acceso.getPassword(), accesoDTO.getPassword()))
-					 * { throw new Exception("Usuario y/o Contraseña Invalida..."); }
-					 */
-					if (!acceso.getPassword().equals(accesoDTO.getPassword())) {
-						throw new Exception("Usuario y/o Contraseña Invalida...");
+					if(accesoDTO.getUsername().equals(acceso.getUsername()) &&
+							acceso.getPassword().equals(accesoDTO.getPassword())) {						
+					}
+					else {
+						accesoDTO = null;
 					}
 				} catch (Exception e) {
 					System.err.println("Exception AccesoRepositoryImpl validaAccesoResult: " + e.toString());
 				}
-			}
+			}			
 			return accesoDTO;
 		}
 	}

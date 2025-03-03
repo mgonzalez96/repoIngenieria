@@ -33,7 +33,7 @@ public class AccesoController {
 	 * @Descripcion Método para crear el acceso del usuario
 	 */
 	@PostMapping("/validaAcceso")
-	public ResponseEntity<AccesoDTO> validaAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {
+	public ResponseEntity<AccesoDTO> validaAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {		
 		return ResponseEntity.ok(accesoService.validaAcceso(accesoDTO));
 	}
 

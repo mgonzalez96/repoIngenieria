@@ -33,7 +33,12 @@ public class AccesoServiceImpl implements AccesoService {
 	 */
 	@Override
 	public AccesoDTO validaAcceso(AccesoDTO accesoDTO) throws Exception {
-		return accesoRepositoryImpl.validaAcceso(accesoDTO);
+		accesoDTO = accesoRepositoryImpl.validaAcceso(accesoDTO);
+		if (accesoDTO == null) {
+			throw new Exception("Usuario y/o Contraseña Invalidos...");
+		} else {
+			return accesoDTO;
+		}
 	}
 
 	/**
@@ -93,7 +98,7 @@ public class AccesoServiceImpl implements AccesoService {
 	public AccesoDTO datosAcceso(UsuarioDTO usuario) throws Exception {
 		return accesoRepositoryImpl.datosAcceso(usuario);
 	}
-	
+
 	/**
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para activar usuarios por numero de documento
