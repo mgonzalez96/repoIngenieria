@@ -13,7 +13,8 @@ public class TipoCalificacionDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer tipocodi;
-	private String tiponomb;
+	private Integer tiponomb;
+	//private String tiponomb;
 
 
 }

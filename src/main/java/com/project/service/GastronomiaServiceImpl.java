@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.dto.GastrocalificaDTO;
+import com.project.dto.CalificacionDTO;
 import com.project.dto.GastronomiaDTO;
 import com.project.repository.GastronomiaRepositoryImpl;
 
@@ -20,7 +20,7 @@ public class GastronomiaServiceImpl implements GastronomiaService {
 	 * @Descripcion Método para listar los platos tipicos de la region
 	 */
 	@Override
-	public List<GastrocalificaDTO> consultaAllGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
+	public List<CalificacionDTO> consultaAllGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
 		return gastronomiaRepositoryImpl.consultaAllGastronomia(gastronomiaDTO);
 	}
 

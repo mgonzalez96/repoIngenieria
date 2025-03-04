@@ -37,7 +37,7 @@ public class TipoCalificacionRepositoryImpl extends JdbcDaoSupport {
 			try {
 				tipoDto = new TipoCalificacionDTO();
 				tipoDto.setTipocodi(rs.getInt("tipocodi"));
-				tipoDto.setTiponomb(rs.getString("tiponomb"));
+				tipoDto.setTiponomb(rs.getInt("tiponomb"));
 			} catch (Exception e) {
 				System.err.println(
 						"Exception TipoCalificacionRepositoryImpl consultaAllTipoCalificacion_1: " + e.toString());

@@ -1,8 +1,7 @@
 package com.project.service;
 
 import java.util.List;
-
-import com.project.dto.GastrocalificaDTO;
+import com.project.dto.CalificacionDTO;
 import com.project.dto.GastronomiaDTO;
 
 public interface GastronomiaService {
@@ -11,7 +10,7 @@ public interface GastronomiaService {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para listar los platos tipicos de la region
 	 */
-	public List<GastrocalificaDTO> consultaAllGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception;
+	public List<CalificacionDTO> consultaAllGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception;
 
 	/**
 	 * @Usuario Mariana Acevedo
