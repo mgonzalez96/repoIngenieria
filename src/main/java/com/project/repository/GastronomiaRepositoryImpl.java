@@ -131,34 +131,34 @@ public class GastronomiaRepositoryImpl extends JdbcDaoSupport {
 	private RowMapper<CalificacionDTO> consultaAllGastronomiaRowMapper = new RowMapper<CalificacionDTO>() {
 		@Override
 		public CalificacionDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-			CalificacionDTO gastronomia = null;
+			CalificacionDTO calificacion = null;
 			try {
-				gastronomia = new CalificacionDTO();
-				gastronomia.getGastcodi().setGastcodi(rs.getInt("gastcodi"));
-				gastronomia.getGastcodi().setGastnomb(rs.getString("gastnomb"));
-				gastronomia.getGastcodi().setGastdesc(rs.getString("gastdesc"));
-				gastronomia.getGastcodi().setGastimag(rs.getString("gastimag"));
-				gastronomia.getGastcodi().setGastface(rs.getString("gastface"));
-				gastronomia.getGastcodi().setGasturlx(rs.getString("gasturlx"));
-				gastronomia.getGastcodi().setGastinst(rs.getString("gastinst"));
-				gastronomia.getGastcodi().setGastesta(rs.getInt("gastesta"));
-				if (gastronomia.getGastcodi().getGastesta() == 1) {
-					gastronomia.getGastcodi().setGastestaStr("Activo");
+				calificacion = new CalificacionDTO();
+				calificacion.getGastcodi().setGastcodi(rs.getInt("gastcodi"));
+				calificacion.getGastcodi().setGastnomb(rs.getString("gastnomb"));
+				calificacion.getGastcodi().setGastdesc(rs.getString("gastdesc"));
+				calificacion.getGastcodi().setGastimag(rs.getString("gastimag"));
+				calificacion.getGastcodi().setGastface(rs.getString("gastface"));
+				calificacion.getGastcodi().setGasturlx(rs.getString("gasturlx"));
+				calificacion.getGastcodi().setGastinst(rs.getString("gastinst"));
+				calificacion.getGastcodi().setGastesta(rs.getInt("gastesta"));
+				if (calificacion.getGastcodi().getGastesta() == 1) {
+					calificacion.getGastcodi().setGastestaStr("Activo");
 				} else {
-					gastronomia.getGastcodi().setGastestaStr("Inactiva");
+					calificacion.getGastcodi().setGastestaStr("Inactiva");
 				}
-				gastronomia.setCalicodi(rs.getInt("calicodi"));
+				calificacion.setCalicodi(rs.getInt("calicodi"));
 				if (rs.getTimestamp("califech") != null) {
-					gastronomia.setCalifech(rs.getTimestamp("califech"));
+					calificacion.setCalifech(rs.getTimestamp("califech"));
 				} else {
-					gastronomia.setCalifech(null);
+					calificacion.setCalifech(null);
 				}
-				gastronomia.setCaliobse(rs.getString("caliobse"));
-				gastronomia.getTipocodi().setTiponomb(rs.getInt("calificacion"));
+				calificacion.setCaliobse(rs.getString("caliobse"));
+				calificacion.getTipocodi().setTiponomb(rs.getInt("calificacion"));
 			} catch (Exception e) {
 				System.err.println("Exception CalificacionRepositoryImpl consultaAllGastronomia_1: " + e.toString());
 			}
-			return gastronomia;
+			return calificacion;
 		}
 	};
 
