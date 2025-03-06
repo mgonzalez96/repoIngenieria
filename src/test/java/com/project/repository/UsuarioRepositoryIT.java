@@ -130,5 +130,40 @@ class UsuarioRepositoryIT {
 		assertNotNull(usuarioRepositoryImpl.recuperaAcceso(usuario), "Acceso válido");
 	}
 	
+	@Test
+	@Order(8)
+	void eliminarUsuario() throws Exception {
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setDocumento(1113123457L);
+
+		Integer resultado = 0;
+		resultado = usuarioRepositoryImpl.eliminarUsuario(usuario);
+
+		assertNotNull(resultado, "Usuario eliminado");
+	}
+	
+	@Test
+	@Order(9)
+	void activarUsuario() throws Exception {
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setDocumento(1113123457L);
+
+		Integer resultado = 0;
+		resultado = usuarioRepositoryImpl.activarUsuario(usuario);
+
+		assertNotNull(resultado, "Usuario activo");
+	}
+	
+	@Test
+	@Order(10)
+	void modificaAcceso() throws Exception {
+		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setUsuario("1113123457");
+		usuario.setDocumento(1113123457L);
+		usuario.setContrasena("1234");
+
+		assertNotNull(usuarioRepositoryImpl.modificaAcceso(usuario), "Acceso modificado");
+	}
+	
 
 }
