@@ -32,7 +32,7 @@ public class UsuarioDTO implements Serializable {
 	private String usuario;
 	private String contrasena;
 	private Integer estado;
-	private AccesoDTO idacceso = new AccesoDTO();
+	private Perfil idperfil = new Perfil();
 	private String asunto;
 	private String descripcion;
 

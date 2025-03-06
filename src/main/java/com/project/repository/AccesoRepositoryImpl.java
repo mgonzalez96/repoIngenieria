@@ -21,8 +21,8 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer crearPerfil(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " INSERT INTO public.acceso(idacceso, nombreperfil, estado) "
-					+ "	VALUES (nextval('sec_acceso'), ?, 1) ";
+			String SQL = " INSERT INTO public.perfil(idperfil, nombreperfil, estado) "
+					+ "	VALUES (nextval('sec_perfil'), ?, 1) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -44,7 +44,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer modificarPerfil(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " UPDATE public.acceso " + "	SET nombreperfil=?, estado=? " + "	WHERE idacceso=? ";
+			String SQL = " UPDATE public.perfil " + "	SET nombreperfil=?, estado=? " + "	WHERE idperfil=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -70,7 +70,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer inactivarPerfil(AccesoDTO accesoDTO) throws Exception {
 		try {
-			String SQL = " UPDATE public.acceso SET estado=? WHERE idacceso=? ";
+			String SQL = " UPDATE public.perfil SET estado=? WHERE idperfil=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

@@ -26,6 +26,36 @@ class AccesoRepositoryIT {
 	void test() {
 		fail("Not yet implemented");
 	}
+	
+	@Test
+	@Order(1)
+	void crearPerfil() throws Exception {
+		AccesoDTO acceso = new AccesoDTO();
+		acceso.setNombreperfil("Editor");;
+		assertNotNull(accesoRepositoryImpl.crearPerfil(acceso), "Perfil creado");
+	}
+	
+	@Test
+	@Order(2)
+	void modificarPerfil() throws Exception {
+		AccesoDTO acceso = new AccesoDTO();
+		acceso.setNombreperfil("Editor");
+		acceso.setEstado(1);
+		acceso.setIdacceso(12L);
+		assertNotNull(accesoRepositoryImpl.modificarPerfil(acceso), "Perfil modificado");
+	}
+	
+	@Test
+	@Order(3)
+	void inactivarPerfil() throws Exception {
+		AccesoDTO acceso = new AccesoDTO();
+		acceso.setEstado(0);
+		acceso.setIdacceso(12L);
+		assertNotNull(accesoRepositoryImpl.inactivarPerfil(acceso), "Perfil inactivo");
+	}
+	
+	
+//-----------------------------------------------------------------------
 
 	/*@Test
 	@Order(1)
@@ -38,15 +68,7 @@ class AccesoRepositoryIT {
 		assertNotNull(accesoRepositoryImpl.crearAccesoUsuario(acceso), "Acceso del usuario creado");
 	}
 
-	@Test
-	@Order(2)
-	void validaAcceso() throws Exception {
-		AccesoDTO acceso = new AccesoDTO();
-		acceso.setUsername("1113123457");
-		acceso.setPassword("1234");
-
-		assertNotNull(accesoRepositoryImpl.validaAcceso(acceso), "Acceso válido");
-	}
+	
 
 	@Test
 	@Order(3)

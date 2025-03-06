@@ -30,9 +30,9 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = " INSERT INTO public.usuario( "
 					+ "	 documento, nombreuno, nombredos, apellidouno, apellidodos, correo, "
-					+ "  fechanac, celular, usuario, contrasena, estado, idacceso) "
-					+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, (select a.idacceso   "
-					+ "					                          from public.acceso a    "
+					+ "  fechanac, celular, usuario, contrasena, estado, idperfil) "
+					+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, (select a.idperfil   "
+					+ "					                          from public.perfil a    "
 					+ "					                          where a.nombreperfil = 'USER')) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
@@ -96,11 +96,11 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer modificarPerfil(UsuarioDTO usuarioDTO) throws Exception {
 		try {
-			String SQL = " UPDATE usuario SET idacceso = ? WHERE documento = ? ";
+			String SQL = " UPDATE usuario SET idperfil = ? WHERE documento = ? ";
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setLong(1, usuarioDTO.getIdacceso().getIdacceso());
+					ps.setLong(1, usuarioDTO.getIdperfil().getIdperfil());
 					ps.setLong(2, usuarioDTO.getDocumento());
 				}
 			};
@@ -119,21 +119,27 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = " SELECT u.documento, u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos,  "
 					+ "       u.correo, u.fechanac, u.celular, u.usuario, u.contrasena,  "
-					+ "	   u.estado, a.idacceso, a.nombreperfil, a.estado " + " FROM public.usuario u, public.acceso a "
-					+ " WHERE a.idacceso = u.idacceso " + " AND u.documento = ? ";
-			return getJdbcTemplate().queryForObject(SQL, consultaUsuarioByDocumentoRowMapper,
-					usuarioDTO.getDocumento());
+					+ "	   u.estado, a.idperfil, a.nombreperfil, a.estado " + " FROM public.usuario u, public.perfil a "
+					+ " WHERE a.idperfil = u.idperfil " + " AND u.documento = ? ";
+			
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuarioDTO.getDocumento());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, new consultaUsuarioByDocumentoRowMapper());
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaUsuarioByDocumento: " + e.toString());
 			throw new Exception("Usuario no existe, valide el documento ingresado");
 		}
 	}
-
-	private RowMapper<UsuarioDTO> consultaUsuarioByDocumentoRowMapper = new RowMapper<UsuarioDTO>() {
+	
+	private class consultaUsuarioByDocumentoRowMapper implements ResultSetExtractor<UsuarioDTO> {
 		@Override
-		public UsuarioDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public UsuarioDTO extractData(ResultSet rs) throws SQLException, DataAccessException {
 			UsuarioDTO usuario = null;
-			try {
+			while (rs.next()) {
 				usuario = new UsuarioDTO();
 				usuario.setDocumento(rs.getLong("documento"));
 				usuario.setNombreuno(rs.getString("nombreuno"));
@@ -146,20 +152,18 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 				usuario.setUsuario(rs.getString("usuario"));
 				usuario.setContrasena(rs.getString("contrasena"));
 				usuario.setEstado(rs.getInt("estado"));
-				usuario.getIdacceso().setIdacceso(rs.getLong("idacceso"));
-				usuario.getIdacceso().setNombreperfil(rs.getString("nombreperfil"));
-				usuario.getIdacceso().setEstado(rs.getInt("estado"));
-				if (usuario.getIdacceso().getEstado() == 1) {
-					usuario.getIdacceso().setStrEstado("Activo");
+				usuario.getIdperfil().setIdperfil(rs.getInt("idperfil"));
+				usuario.getIdperfil().setNombreperfil(rs.getString("nombreperfil"));
+				usuario.getIdperfil().setEstado(rs.getInt("estado"));
+				if (usuario.getIdperfil().getEstado() == 1) {
+					usuario.getIdperfil().setStrEstado("Activo");
 				} else {
-					usuario.getIdacceso().setStrEstado("Inactivo");
+					usuario.getIdperfil().setStrEstado("Inactivo");
 				}
-			} catch (Exception e) {
-				System.err.println("Exception UsuarioRepositoryImpl consultaUsuarioByDocumento_1: " + e.toString());
 			}
 			return usuario;
 		}
-	};
+	}
 
 	/**
 	 * @Usuario Mariana Acevedo
@@ -169,8 +173,8 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = " SELECT u.documento, u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos,   "
 					+ "       u.correo, u.fechanac, u.celular, u.usuario, u.contrasena,   "
-					+ "	   u.estado, a.idacceso, a.nombreperfil, a.estado  "
-					+ "FROM public.usuario u, public.acceso a  " + "WHERE a.idacceso = u.idacceso ";
+					+ "	   u.estado, a.idperfil, a.nombreperfil, a.estado  "
+					+ "FROM public.usuario u, public.perfil a  " + "WHERE a.idperfil = u.idperfil ";
 			return getJdbcTemplate().query(SQL, consultaAllUsuarioRowMapper);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario: " + e.toString());
@@ -195,13 +199,13 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 				usuario.setUsuario(rs.getString("usuario"));
 				usuario.setContrasena(rs.getString("contrasena"));
 				usuario.setEstado(rs.getInt("estado"));
-				usuario.getIdacceso().setIdacceso(rs.getLong("idacceso"));
-				usuario.getIdacceso().setNombreperfil(rs.getString("nombreperfil"));
-				usuario.getIdacceso().setEstado(rs.getInt("estado"));
-				if (usuario.getIdacceso().getEstado() == 1) {
-					usuario.getIdacceso().setStrEstado("Activo");
+				usuario.getIdperfil().setIdperfil(rs.getInt("idperfil"));
+				usuario.getIdperfil().setNombreperfil(rs.getString("nombreperfil"));
+				usuario.getIdperfil().setEstado(rs.getInt("estado"));
+				if (usuario.getIdperfil().getEstado() == 1) {
+					usuario.getIdperfil().setStrEstado("Activo");
 				} else {
-					usuario.getIdacceso().setStrEstado("Inactivo");
+					usuario.getIdperfil().setStrEstado("Inactivo");
 				}
 			} catch (Exception e) {
 				System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario_1: " + e.toString());
@@ -219,8 +223,8 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	public UsuarioDTO validaAcceso(UsuarioDTO user) throws Exception {
 		usuario = user;
 		try {
-			String SQL = " select u.documento, u.usuario, u.contrasena, a.idacceso, a.nombreperfil    "
-					+ " from public.usuario u, public.acceso a    " + " WHERE a.idacceso = u.idacceso    "
+			String SQL = " select u.documento, u.usuario, u.contrasena, a.idperfil, a.nombreperfil    "
+					+ " from public.usuario u, public.perfil a    " + " WHERE a.idperfil = u.idperfil    "
 					+ " AND u.usuario = ? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
@@ -245,8 +249,8 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 				user.setDocumento(rs.getLong("documento"));
 				user.setUsuario(rs.getString("usuario"));
 				user.setContrasena(rs.getString("contrasena"));
-				user.getIdacceso().setIdacceso(rs.getLong("idacceso"));
-				user.getIdacceso().setNombreperfil(rs.getString("nombreperfil"));
+				user.getIdperfil().setIdperfil(rs.getInt("idperfil"));
+				user.getIdperfil().setNombreperfil(rs.getString("nombreperfil"));
 				try {
 					if (user.getUsuario().equals(usuario.getUsuario())
 							&& user.getContrasena().equals(usuario.getContrasena())) {

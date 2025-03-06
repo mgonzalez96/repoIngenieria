@@ -16,5 +16,6 @@ public class Perfil implements Serializable {
 	private Integer idperfil;
 	private String nombreperfil;
 	private Integer estado;
+	private String strEstado;
 
 }
