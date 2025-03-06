@@ -5,15 +5,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
-
 import com.project.dto.UsuarioDTO;
 
 @Repository
 public class UsuarioRepositoryImpl extends JdbcDaoSupport {
+
+	public UsuarioDTO usuario = new UsuarioDTO();
 
 	public UsuarioRepositoryImpl(DataSource dataSource) {
 		setDataSource(dataSource);
@@ -26,8 +29,11 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearUsuario(UsuarioDTO usuarioDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.usuario( "
-					+ "	documento, nombreuno, nombredos, apellidouno, apellidodos, email, fechanac, celular, fechasys) "
-					+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) ";
+					+ "	 documento, nombreuno, nombredos, apellidouno, apellidodos, correo, "
+					+ "  fechanac, celular, usuario, contrasena, estado, idacceso) "
+					+ "	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, (select a.idacceso   "
+					+ "					                          from public.acceso a    "
+					+ "					                          where a.nombreperfil = 'USER')) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
@@ -37,9 +43,11 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 					ps.setString(3, usuarioDTO.getNombredos());
 					ps.setString(4, usuarioDTO.getApellidouno());
 					ps.setString(5, usuarioDTO.getApellidodos());
-					ps.setString(6, usuarioDTO.getEmail());
+					ps.setString(6, usuarioDTO.getCorreo());
 					ps.setDate(7, new java.sql.Date(usuarioDTO.getFechanac().getTime()));
 					ps.setLong(8, usuarioDTO.getCelular());
+					ps.setString(9, usuarioDTO.getUsuario());
+					ps.setString(10, usuarioDTO.getContrasena());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
@@ -55,9 +63,9 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public Integer modificarUsuario(UsuarioDTO usuarioDTO) throws Exception {
 		try {
-			String SQL = " UPDATE usuario " + " SET nombreUno = ?," + "     nombreDos = ?," + "     apellidoUno = ?,"
-					+ "     apellidoDos = ?," + "     email = ?," + "     fechaNac = ?," + "     celular = ?"
-					+ " WHERE documento = ? ";
+			String SQL = " UPDATE public.usuario " + " SET nombreuno = ?," + "     nombredos = ?," + "     apellidouno = ?,"
+					+ "     apellidodos = ?," + "     correo = ?," + "     fechanac = ?," + "     celular = ?, "
+					+ "     usuario = ?," + "     contrasena = ?, " + "     estado = ? " + " WHERE documento = ? ";
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
@@ -65,16 +73,41 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 					ps.setString(2, usuarioDTO.getNombredos());
 					ps.setString(3, usuarioDTO.getApellidouno());
 					ps.setString(4, usuarioDTO.getApellidodos());
-					ps.setString(5, usuarioDTO.getEmail());
+					ps.setString(5, usuarioDTO.getCorreo());
 					ps.setDate(6, new java.sql.Date(usuarioDTO.getFechanac().getTime()));
 					ps.setLong(7, usuarioDTO.getCelular());
-					ps.setLong(8, usuarioDTO.getDocumento());
+					ps.setString(8, usuarioDTO.getUsuario());
+					ps.setString(9, usuarioDTO.getContrasena());
+					ps.setInt(10, usuarioDTO.getEstado());
+					ps.setLong(11, usuarioDTO.getDocumento());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl modificarUsuario: " + e.toString());
+			e.printStackTrace();
 			throw new Exception("Error al modificar el usuario");
+		}
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para modificar el perfil del usuario
+	 */
+	public Integer modificarPerfil(UsuarioDTO usuarioDTO) throws Exception {
+		try {
+			String SQL = " UPDATE usuario SET idacceso = ? WHERE documento = ? ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuarioDTO.getIdacceso().getIdacceso());
+					ps.setLong(2, usuarioDTO.getDocumento());
+				}
+			};
+			return getJdbcTemplate().update(SQL, setter);
+		} catch (Exception e) {
+			System.err.println("Exception UsuarioRepositoryImpl modificarPerfil: " + e.toString());
+			throw new Exception("Error al modificar el perfil del usuario");
 		}
 	}
 
@@ -84,7 +117,10 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public UsuarioDTO consultaUsuarioByDocumento(UsuarioDTO usuarioDTO) throws Exception {
 		try {
-			String SQL = " SELECT * FROM usuario WHERE documento = ? ";
+			String SQL = " SELECT u.documento, u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos,  "
+					+ "       u.correo, u.fechanac, u.celular, u.usuario, u.contrasena,  "
+					+ "	   u.estado, a.idacceso, a.nombreperfil, a.estado " + " FROM public.usuario u, public.acceso a "
+					+ " WHERE a.idacceso = u.idacceso " + " AND u.documento = ? ";
 			return getJdbcTemplate().queryForObject(SQL, consultaUsuarioByDocumentoRowMapper,
 					usuarioDTO.getDocumento());
 		} catch (Exception e) {
@@ -100,14 +136,24 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 			try {
 				usuario = new UsuarioDTO();
 				usuario.setDocumento(rs.getLong("documento"));
-				usuario.setNombreuno(rs.getString("nombreUno"));
-				usuario.setNombredos(rs.getString("nombreDos"));
-				usuario.setApellidouno(rs.getString("apellidoUno"));
-				usuario.setApellidodos(rs.getString("apellidoDos"));
-				usuario.setEmail(rs.getString("email"));
-				usuario.setFechanac(rs.getDate("fechaNac"));
+				usuario.setNombreuno(rs.getString("nombreuno"));
+				usuario.setNombredos(rs.getString("nombredos"));
+				usuario.setApellidouno(rs.getString("apellidouno"));
+				usuario.setApellidodos(rs.getString("apellidodos"));
+				usuario.setCorreo(rs.getString("correo"));
+				usuario.setFechanac(rs.getDate("fechanac"));
 				usuario.setCelular(rs.getLong("celular"));
-				usuario.setFechasys(rs.getDate("fechaSys"));
+				usuario.setUsuario(rs.getString("usuario"));
+				usuario.setContrasena(rs.getString("contrasena"));
+				usuario.setEstado(rs.getInt("estado"));
+				usuario.getIdacceso().setIdacceso(rs.getLong("idacceso"));
+				usuario.getIdacceso().setNombreperfil(rs.getString("nombreperfil"));
+				usuario.getIdacceso().setEstado(rs.getInt("estado"));
+				if (usuario.getIdacceso().getEstado() == 1) {
+					usuario.getIdacceso().setStrEstado("Activo");
+				} else {
+					usuario.getIdacceso().setStrEstado("Inactivo");
+				}
 			} catch (Exception e) {
 				System.err.println("Exception UsuarioRepositoryImpl consultaUsuarioByDocumento_1: " + e.toString());
 			}
@@ -121,7 +167,10 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 	 */
 	public List<UsuarioDTO> consultaAllUsuario() throws Exception {
 		try {
-			String SQL = " SELECT * FROM usuario ";
+			String SQL = " SELECT u.documento, u.nombreuno, u.nombredos, u.apellidouno, u.apellidodos,   "
+					+ "       u.correo, u.fechanac, u.celular, u.usuario, u.contrasena,   "
+					+ "	   u.estado, a.idacceso, a.nombreperfil, a.estado  "
+					+ "FROM public.usuario u, public.acceso a  " + "WHERE a.idacceso = u.idacceso ";
 			return getJdbcTemplate().query(SQL, consultaAllUsuarioRowMapper);
 		} catch (Exception e) {
 			System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario: " + e.toString());
@@ -136,19 +185,184 @@ public class UsuarioRepositoryImpl extends JdbcDaoSupport {
 			try {
 				usuario = new UsuarioDTO();
 				usuario.setDocumento(rs.getLong("documento"));
-				usuario.setNombreuno(rs.getString("nombreUno"));
-				usuario.setNombredos(rs.getString("nombreDos"));
-				usuario.setApellidouno(rs.getString("apellidoUno"));
-				usuario.setApellidodos(rs.getString("apellidoDos"));
-				usuario.setEmail(rs.getString("email"));
-				usuario.setFechanac(rs.getDate("fechaNac"));
+				usuario.setNombreuno(rs.getString("nombreuno"));
+				usuario.setNombredos(rs.getString("nombredos"));
+				usuario.setApellidouno(rs.getString("apellidouno"));
+				usuario.setApellidodos(rs.getString("apellidodos"));
+				usuario.setCorreo(rs.getString("correo"));
+				usuario.setFechanac(rs.getDate("fechanac"));
 				usuario.setCelular(rs.getLong("celular"));
-				usuario.setFechasys(rs.getDate("fechaSys"));
+				usuario.setUsuario(rs.getString("usuario"));
+				usuario.setContrasena(rs.getString("contrasena"));
+				usuario.setEstado(rs.getInt("estado"));
+				usuario.getIdacceso().setIdacceso(rs.getLong("idacceso"));
+				usuario.getIdacceso().setNombreperfil(rs.getString("nombreperfil"));
+				usuario.getIdacceso().setEstado(rs.getInt("estado"));
+				if (usuario.getIdacceso().getEstado() == 1) {
+					usuario.getIdacceso().setStrEstado("Activo");
+				} else {
+					usuario.getIdacceso().setStrEstado("Inactivo");
+				}
 			} catch (Exception e) {
 				System.err.println("Exception UsuarioRepositoryImpl consultaAllUsuario_1: " + e.toString());
 			}
 			return usuario;
 		}
 	};
+
+	// ----------------------------------------------------------------------------------
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para crear el acceso del usuario
+	 */
+	public UsuarioDTO validaAcceso(UsuarioDTO user) throws Exception {
+		usuario = user;
+		try {
+			String SQL = " select u.documento, u.usuario, u.contrasena, a.idacceso, a.nombreperfil    "
+					+ " from public.usuario u, public.acceso a    " + " WHERE a.idacceso = u.idacceso    "
+					+ " AND u.usuario = ? ";
+
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setString(1, user.getUsuario());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, new validaAccesoResult());
+		} catch (Exception e) {
+			System.err.println("Exception UsuarioRepositoryImpl validaAcceso: " + e.toString());
+			throw new Exception("Usuario y/o Contraseña Invalida");
+		}
+	}
+
+	private class validaAccesoResult implements ResultSetExtractor<UsuarioDTO> {
+		@Override
+		public UsuarioDTO extractData(ResultSet rs) throws SQLException, DataAccessException {
+			UsuarioDTO user = null;
+			while (rs.next()) {
+				user = new UsuarioDTO();
+				user.setDocumento(rs.getLong("documento"));
+				user.setUsuario(rs.getString("usuario"));
+				user.setContrasena(rs.getString("contrasena"));
+				user.getIdacceso().setIdacceso(rs.getLong("idacceso"));
+				user.getIdacceso().setNombreperfil(rs.getString("nombreperfil"));
+				try {
+					if (user.getUsuario().equals(usuario.getUsuario())
+							&& user.getContrasena().equals(usuario.getContrasena())) {
+					} else {
+						user = null;
+					}
+				} catch (Exception e) {
+					System.err.println("Exception UsuarioRepositoryImpl validaAccesoResult: " + e.toString());
+				}
+			}
+			return user;
+		}
+	}
+// -------------------------------------------------------------------------------------
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para recuperar el acceso del usuario
+	 */
+	public UsuarioDTO recuperaAcceso(UsuarioDTO usuarioDTO) throws Exception {
+		try {
+			String SQL = " SELECT usuario, contrasena, correo  " + " FROM public.usuario  " + " WHERE usuario = ? ";
+
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setString(1, usuarioDTO.getUsuario());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, new recuperaAccesoResult());
+		} catch (Exception e) {
+			System.err.println("Exception UsuarioRepositoryImpl recuperaAcceso: " + e.toString());
+			throw new Exception("No existe usuario con el username ingresado");
+		}
+	}
+
+	private class recuperaAccesoResult implements ResultSetExtractor<UsuarioDTO> {
+		@Override
+		public UsuarioDTO extractData(ResultSet rs) throws SQLException, DataAccessException {
+			UsuarioDTO usuarioDTO = null;
+			while (rs.next()) {
+				usuarioDTO = new UsuarioDTO();
+				usuarioDTO.setUsuario(rs.getString("usuario"));
+				usuarioDTO.setContrasena(rs.getString("contrasena"));
+				usuarioDTO.setCorreo(rs.getString("correo"));
+			}
+			return usuarioDTO;
+		}
+	}
+
+// ---------------------------------------------------------------------------------------
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para inactivar el usuario por documento 
+	 */
+	public Integer eliminarUsuario(UsuarioDTO usuario) throws Exception {
+		try {
+			String SQL = " UPDATE public.usuario SET estado = 0  WHERE documento = ?   ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuario.getDocumento());
+				}
+			};
+			return getJdbcTemplate().update(SQL, setter);
+		} catch (Exception e) {
+			System.err.println("Exception UsuarioRepositoryImpl eliminarUsuario: " + e.toString());
+			throw new Exception("Error al eliminar el eliminar del usuario");
+		}
+	}
+
+// -----------------------------------------------------------------------
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para activar usuarios por numero de documento
+	 */
+	public Integer activarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+		try {
+			String SQL = " UPDATE public.usuario SET estado = 1 WHERE documento = ? ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, usuarioDTO.getDocumento());
+				}
+			};
+			return getJdbcTemplate().update(SQL, setter);
+		} catch (Exception e) {
+			System.err.println("Exception UsuarioRepositoryImpl activarUsuario: " + e.toString());
+			throw new Exception("Usuario no existe para activarlo");
+		}
+	}
+
+// ---------------------------------------------------------------------------------------
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para modificar el acceso del usuario por documento y
+	 *              usuario
+	 */
+	public Integer modificaAcceso(UsuarioDTO usuario) throws Exception {
+		try {
+			String SQL = " UPDATE public.usuario SET contrasena = ? WHERE usuario = ?   " + " AND documento = ? ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setString(1, usuario.getContrasena());
+					ps.setString(2, usuario.getUsuario());
+					ps.setLong(3, usuario.getDocumento());
+				}
+			};
+			return getJdbcTemplate().update(SQL, setter);
+		} catch (Exception e) {
+			System.err.println("Exception UsuarioRepositoryImpl modificaAcceso: " + e.toString());
+			throw new Exception("Error al modificar el acceso del usuario");
+		}
+	}
 
 }

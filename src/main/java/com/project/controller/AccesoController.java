@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.project.dto.AccesoDTO;
-import com.project.dto.UsuarioDTO;
 import com.project.service.AccesoService;
 
 @RestController
@@ -21,101 +19,29 @@ public class AccesoController {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para crear el acceso del usuario
+	 * @Descripcion Método para crear perfiles
 	 */
-	@PostMapping("/crearAccesoUsuario")
-	public ResponseEntity<Integer> crearAccesoUsuario(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.crearAccesoUsuario(accesoDTO));
+	@PostMapping("/crearPerfil")
+	public ResponseEntity<Integer> crearPerfil(@RequestBody AccesoDTO accesoDTO) throws Exception {
+		return ResponseEntity.ok(accesoService.crearPerfil(accesoDTO));
 	}
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para crear el acceso del usuario
+	 * @Descripcion Método para modificar los perfiles
 	 */
-	@PostMapping("/validaAcceso")
-	public ResponseEntity<AccesoDTO> validaAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {		
-		return ResponseEntity.ok(accesoService.validaAcceso(accesoDTO));
+	@PutMapping("/modificarPerfil")
+	public ResponseEntity<Integer> modificarPerfil(@RequestBody AccesoDTO accesoDTO) throws Exception {
+		return ResponseEntity.ok(accesoService.modificarPerfil(accesoDTO));
 	}
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para recuperar el acceso del usuario
+	 * @Descripcion Método para inactivar los perfiles
 	 */
-	@PostMapping("/recuperaAcceso")
-	public ResponseEntity<AccesoDTO> recuperaAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.recuperaAcceso(accesoDTO));
-	}
-
-	/**
-	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para modificar el acceso del usuario por documento y
-	 *              usuario
-	 */
-	@PutMapping("/modificaAcceso")
-	public ResponseEntity<Integer> modificaAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.modificaAcceso(accesoDTO));
-	}
-
-	/**
-	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar el acceso del usuario por documento y
-	 *              usuario
-	 */
-	@PutMapping("/eliminarAcceso")
-	public ResponseEntity<Integer> eliminarAcceso(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.eliminarAcceso(accesoDTO));
-	}
-
-	@PostMapping("/olvidoPassword")
-	public ResponseEntity<Integer> olvidoPassword(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		try {
-			//AccesoDTO accesoDTO = new AccesoDTO();
-			accesoDTO = accesoService.recuperaAcceso(accesoDTO);
-			if (accesoDTO != null) {
-				String detalle = "";
-				accesoDTO.setAsunto("Recuperación Credencial ConéctateConCandelariaValle");
-
-				detalle = "Cordial saludo";
-				detalle += "\n";
-				detalle += "\n";
-				detalle += "A continuación se encuentran los datos de acceso al App ConéctateConCandelariaValle";
-				detalle += "\n";
-				detalle += "\n";
-				detalle += "Usuario: " + accesoDTO.getUsername();
-				detalle += "\n";
-				detalle += "Contraseña: " + accesoDTO.getPassword();
-				detalle += "\n";
-				detalle += "\n";
-				detalle += "Este es un correo generado automáticamente, por favor abstenerse de responder este correo";
-
-				accesoDTO.setDescripcion(detalle);
-			}
-			accesoService.sendEmail(accesoDTO.getDocumento().getEmail(), accesoDTO.getAsunto(),
-					accesoDTO.getDescripcion());
-			return ResponseEntity.ok(1);
-		} catch (Exception e) {
-			System.err.println("Exception AccesoController olvidoPassword: " + e.toString());
-			return ResponseEntity.ok(0);
-		}
-	}
-
-	/**
-	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para consultar los datos del acceso del usuario por
-	 *              documento
-	 */
-	@PostMapping("/datosAcceso")
-	public ResponseEntity<AccesoDTO> datosAcceso(@RequestBody UsuarioDTO usuario) throws Exception {
-		return ResponseEntity.ok(accesoService.datosAcceso(usuario));
-	}
-
-	/**
-	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para activar usuarios por numero de documento
-	 */
-	@PutMapping("/activarUsuario")
-	public ResponseEntity<Integer> activarUsuario(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.activarUsuario(usuarioDTO));
+	@PutMapping("/inactivarPerfil")
+	public ResponseEntity<Integer> inactivarPerfil(@RequestBody AccesoDTO accesoDTO) throws Exception {
+		return ResponseEntity.ok(accesoService.inactivarPerfil(accesoDTO));
 	}
 
 }

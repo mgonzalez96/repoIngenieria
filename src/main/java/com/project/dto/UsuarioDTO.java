@@ -25,11 +25,15 @@ public class UsuarioDTO implements Serializable {
 	private String nombredos;
 	private String apellidouno;
 	private String apellidodos;
-	private String email;
+	private String correo;
 	@JsonFormat(pattern = "yyyy-MM-dd", locale = "es-CO", timezone = "America/Lima")
 	private Date fechanac;
 	private Long celular;
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", locale = "es-CO", timezone = "America/Lima")
-	private Date fechasys;
+	private String usuario;
+	private String contrasena;
+	private Integer estado;
+	private AccesoDTO idacceso = new AccesoDTO();
+	private String asunto;
+	private String descripcion;
 
 }

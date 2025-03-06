@@ -42,10 +42,9 @@ class UsuarioRepositoryIT {
 		usuario.setNombredos("");
 		usuario.setApellidouno("Acevedo");
 		usuario.setApellidodos("Gonzalez");
-		usuario.setEmail("marianaacevedo1996@gmail.com");
+		usuario.setCorreo("marianaacevedo1996@gmail.com");
 		usuario.setFechanac(format.parse("18/07/1996"));
 		usuario.setCelular(3151234585L);
-		usuario.setFechasys(new Date());
 
 		assertNotNull(usuarioRepositoryImpl.crearUsuario(usuario), "Usuario creado");
 	}
@@ -60,7 +59,7 @@ class UsuarioRepositoryIT {
 		usuario.setNombredos("Maria");
 		usuario.setApellidouno("Gonzalez");
 		usuario.setApellidodos("Acevedo");
-		usuario.setEmail("correoprueba@gmail.com");
+		usuario.setCorreo("correoprueba@gmail.com");
 		usuario.setFechanac(format.parse("18/08/1996"));
 		usuario.setCelular(3151234500L);
 

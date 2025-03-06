@@ -27,7 +27,7 @@ class AccesoRepositoryIT {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	/*@Test
 	@Order(1)
 	void crearAccesoUsuario() throws Exception {
 		AccesoDTO acceso = new AccesoDTO();
@@ -101,6 +101,6 @@ class AccesoRepositoryIT {
 		resultado = accesoRepositoryImpl.activarUsuario(usuario);
 
 		assertNotNull(resultado, "Usuario activo");
-	}
+	}*/
 
 }
