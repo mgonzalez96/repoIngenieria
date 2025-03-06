@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -16,8 +15,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.project.dto.AccesoDTO;
 import com.project.dto.UsuarioDTO;
 
 @SpringBootTest

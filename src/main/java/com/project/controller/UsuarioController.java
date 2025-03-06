@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.project.dto.UsuarioDTO;
-import com.project.service.AccesoService;
+import com.project.service.PerfilService;
 import com.project.service.UsuarioService;
 
 @RestController
@@ -21,7 +21,7 @@ public class UsuarioController {
 	UsuarioService usuarioService;
 
 	@Autowired
-	AccesoService accesoService;
+	PerfilService accesoService;
 
 	/**
 	 * @Usuario Mariana Acevedo

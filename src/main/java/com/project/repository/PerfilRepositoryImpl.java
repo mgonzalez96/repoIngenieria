@@ -6,12 +6,12 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
-import com.project.dto.AccesoDTO;
+import com.project.dto.Perfil;
 
 @Repository
-public class AccesoRepositoryImpl extends JdbcDaoSupport {
+public class PerfilRepositoryImpl extends JdbcDaoSupport {
 
-	public AccesoRepositoryImpl(DataSource dataSource) {
+	public PerfilRepositoryImpl(DataSource dataSource) {
 		setDataSource(dataSource);
 	}
 
@@ -19,7 +19,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para crear perfiles
 	 */
-	public Integer crearPerfil(AccesoDTO accesoDTO) throws Exception {
+	public Integer crearPerfil(Perfil perfil) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.perfil(idperfil, nombreperfil, estado) "
 					+ "	VALUES (nextval('sec_perfil'), ?, 1) ";
@@ -27,7 +27,7 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setString(1, accesoDTO.getNombreperfil());
+					ps.setString(1, perfil.getNombreperfil());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
@@ -42,17 +42,16 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para modificar los perfiles
 	 */
-	public Integer modificarPerfil(AccesoDTO accesoDTO) throws Exception {
+	public Integer modificarPerfil(Perfil perfil) throws Exception {
 		try {
 			String SQL = " UPDATE public.perfil " + "	SET nombreperfil=?, estado=? " + "	WHERE idperfil=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setString(1, accesoDTO.getNombreperfil());
-					ps.setInt(2, accesoDTO.getEstado());
-					ps.setLong(3, accesoDTO.getIdacceso());
-
+					ps.setString(1, perfil.getNombreperfil());
+					ps.setInt(2, perfil.getEstado());
+					ps.setLong(3, perfil.getIdperfil());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
@@ -68,15 +67,15 @@ public class AccesoRepositoryImpl extends JdbcDaoSupport {
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para inactivar los perfiles
 	 */
-	public Integer inactivarPerfil(AccesoDTO accesoDTO) throws Exception {
+	public Integer inactivarPerfil(Perfil perfil) throws Exception {
 		try {
 			String SQL = " UPDATE public.perfil SET estado=? WHERE idperfil=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, accesoDTO.getEstado());
-					ps.setLong(2, accesoDTO.getIdacceso());
+					ps.setInt(1, perfil.getEstado());
+					ps.setLong(2, perfil.getIdperfil());
 
 				}
 			};

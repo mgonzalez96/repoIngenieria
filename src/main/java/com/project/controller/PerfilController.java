@@ -7,23 +7,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.project.dto.AccesoDTO;
-import com.project.service.AccesoService;
+
+import com.project.dto.Perfil;
+import com.project.service.PerfilService;
 
 @RestController
-@RequestMapping("/api/v1/acceso")
-public class AccesoController {
+@RequestMapping("/api/v1/perfil")
+public class PerfilController {
 
 	@Autowired
-	AccesoService accesoService;
+	PerfilService accesoService;
 
 	/**
 	 * @Usuario Mariana Acevedo
 	 * @Descripcion Método para crear perfiles
 	 */
 	@PostMapping("/crearPerfil")
-	public ResponseEntity<Integer> crearPerfil(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.crearPerfil(accesoDTO));
+	public ResponseEntity<Integer> crearPerfil(@RequestBody Perfil perfil) throws Exception {
+		return ResponseEntity.ok(accesoService.crearPerfil(perfil));
 	}
 
 	/**
@@ -31,8 +32,8 @@ public class AccesoController {
 	 * @Descripcion Método para modificar los perfiles
 	 */
 	@PutMapping("/modificarPerfil")
-	public ResponseEntity<Integer> modificarPerfil(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.modificarPerfil(accesoDTO));
+	public ResponseEntity<Integer> modificarPerfil(@RequestBody Perfil perfil) throws Exception {
+		return ResponseEntity.ok(accesoService.modificarPerfil(perfil));
 	}
 
 	/**
@@ -40,8 +41,8 @@ public class AccesoController {
 	 * @Descripcion Método para inactivar los perfiles
 	 */
 	@PutMapping("/inactivarPerfil")
-	public ResponseEntity<Integer> inactivarPerfil(@RequestBody AccesoDTO accesoDTO) throws Exception {
-		return ResponseEntity.ok(accesoService.inactivarPerfil(accesoDTO));
+	public ResponseEntity<Integer> inactivarPerfil(@RequestBody Perfil perfil) throws Exception {
+		return ResponseEntity.ok(accesoService.inactivarPerfil(perfil));
 	}
 
 }
