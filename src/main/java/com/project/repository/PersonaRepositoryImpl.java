@@ -4,7 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.RowMapper;
@@ -93,18 +96,24 @@ public class PersonaRepositoryImpl extends JdbcDaoSupport {
 	public Persona consultaPersonaByDocumento(Persona persona) throws Exception {
 		try {
 			String SQL = " SELECT * FROM persona WHERE idpersona = ? ";
-			return getJdbcTemplate().queryForObject(SQL, consultaPersonaByDocumentoRowMapper, persona.getIdpersona());
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setString(1, persona.getIdpersona());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, new consultaPersonaByDocumentoRowMapper());
 		} catch (Exception e) {
 			System.err.println("Exception PersonaRepositoryImpl consultaPersonaByDocumento: " + e.toString());
 			throw new Exception("Persona no existe, valide el documento ingresado");
 		}
 	}
 
-	private RowMapper<Persona> consultaPersonaByDocumentoRowMapper = new RowMapper<Persona>() {
+	private class consultaPersonaByDocumentoRowMapper implements ResultSetExtractor<Persona> {
 		@Override
-		public Persona mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public Persona extractData(ResultSet rs) throws SQLException, DataAccessException {
 			Persona persona = null;
-			try {
+			while (rs.next()) {
 				persona = new Persona();
 				persona.setIdpersona(rs.getString("idpersona"));
 				persona.setNombre1(rs.getString("nombre1"));
@@ -118,12 +127,10 @@ public class PersonaRepositoryImpl extends JdbcDaoSupport {
 				persona.setUsuario(rs.getString("usuario"));
 				persona.setContrasena(rs.getString("contrasena"));
 				persona.setEstado(rs.getInt("estado"));
-			} catch (Exception e) {
-				System.err.println("Exception PersonaRepositoryImpl consultaPersonaByDocumento_1: " + e.toString());
 			}
 			return persona;
 		}
-	};
+	}
 
 	/**
 	 * @Usuario Mariana Acevedo

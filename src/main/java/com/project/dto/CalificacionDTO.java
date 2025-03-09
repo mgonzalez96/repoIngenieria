@@ -19,5 +19,6 @@ public class CalificacionDTO implements Serializable {
 	private TipoCalificacionDTO tipocodi = new TipoCalificacionDTO();
 	private String caliobse;
 	private GastronomiaDTO gastcodi = new GastronomiaDTO();
+	private Integer promedio;
 
 }

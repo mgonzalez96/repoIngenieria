@@ -3,6 +3,7 @@ package com.project.service;
 import java.util.List;
 
 import com.project.dto.CalificacionDTO;
+import com.project.dto.GastronomiaDTO;
 
 public interface CalificacionService {
 
@@ -23,5 +24,11 @@ public interface CalificacionService {
 	 * @Descripcion Método consultar la gastronomia por calificacion
 	 */
 	public List<CalificacionDTO> consGastronomiaByCalificacion(CalificacionDTO calificacion) throws Exception;
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Consulta El promedio de calificacion por codigo de gastronomia
+	 */
+	public CalificacionDTO getPromedioCalificacion(GastronomiaDTO gastcodi) throws Exception;
 
 }

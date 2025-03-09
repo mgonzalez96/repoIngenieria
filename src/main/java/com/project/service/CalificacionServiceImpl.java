@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.dto.CalificacionDTO;
+import com.project.dto.GastronomiaDTO;
 import com.project.repository.CalificacionRepositoryImpl;
 
 @Service
@@ -39,6 +40,15 @@ public class CalificacionServiceImpl implements CalificacionService {
 	@Override
 	public List<CalificacionDTO> consGastronomiaByCalificacion(CalificacionDTO calificacion) throws Exception {
 		return calificacionRepositoryImpl.consGastronomiaByCalificacion(calificacion);
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Consulta El promedio de calificacion por codigo de gastronomia
+	 */
+	@Override
+	public CalificacionDTO getPromedioCalificacion(GastronomiaDTO gastcodi) throws Exception {
+		return calificacionRepositoryImpl.getPromedioCalificacion(gastcodi);
 	}
 
 }

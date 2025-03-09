@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -28,25 +31,23 @@ public class CalificacionRepositoryImpl extends JdbcDaoSupport {
 	private Integer getSecuencia() {
 		try {
 			String SQL = " select nextval('sec_calificacion') ";
-			return getJdbcTemplate().queryForObject(SQL, getSecuenciaRowMapper);
+			return getJdbcTemplate().query(SQL, new getSecuenciaRowMapper());
 		} catch (Exception e) {
 			System.err.println("Exception CalificacionRepositoryImpl getSecuencia: " + e.toString());
 			return 0;
 		}
 	}
 
-	private RowMapper<Integer> getSecuenciaRowMapper = new RowMapper<Integer>() {
+	private class getSecuenciaRowMapper implements ResultSetExtractor<Integer> {
 		@Override
-		public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
 			Integer secuencia = 0;
-			try {
+			while (rs.next()) {
 				secuencia = rs.getInt(1);
-			} catch (Exception e) {
-				System.err.println("Exception CalificacionRepositoryImpl getSecuencia_1: " + e.toString());
 			}
 			return secuencia;
 		}
-	};
+	}
 
 	/**
 	 * @Usuario Mariana Acevedo
@@ -232,5 +233,43 @@ public class CalificacionRepositoryImpl extends JdbcDaoSupport {
 			return calificacion;
 		}
 	};
+//---------------------------------------------------------------------------------------------------
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Consulta El promedio de calificacion por codigo de gastronomia
+	 */
+	public CalificacionDTO getPromedioCalificacion(GastronomiaDTO gastcodi) throws Exception {
+		try {
+			String SQL = " SELECT g.gastcodi, ROUND(AVG(tc.tiponomb::integer)) AS promedio " + " FROM public.usuario u "
+					+ " LEFT JOIN calificacion c  " + "  ON u.documento = c.caliuser "
+					+ " LEFT JOIN tipocalificacion tc  " + "  ON tc.tipocodi = c.tipocodi "
+					+ " LEFT JOIN gastronomia g  " + "  ON g.gastcodi = c.gastcodi " + " WHERE g.gastcodi = ? "
+					+ " GROUP BY g.gastcodi ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setInt(1, gastcodi.getGastcodi());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, new getPromedioCalificacionRowMapper());
+		} catch (Exception e) {
+			System.err.println("Exception CalificacionRepositoryImpl getPromedioCalificacion: " + e.toString());
+			throw new Exception("Error al consultar el promedio del plato tipico");
+		}
+	}
+
+	private class getPromedioCalificacionRowMapper implements ResultSetExtractor<CalificacionDTO> {
+		@Override
+		public CalificacionDTO extractData(ResultSet rs) throws SQLException, DataAccessException {
+			CalificacionDTO calificacion = null;
+			while (rs.next()) {
+				calificacion = new CalificacionDTO();
+				calificacion.getGastcodi().setGastcodi(rs.getInt("gastcodi"));
+				calificacion.setPromedio(rs.getInt("promedio"));
+			}
+			return calificacion;
+		}
+	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.dto.CalificacionDTO;
+import com.project.dto.GastronomiaDTO;
 import com.project.service.CalificacionService;
 
 @RestController
@@ -46,6 +47,15 @@ public class CalificacionController {
 	public ResponseEntity<List<CalificacionDTO>> consGastronomiaByCalificacion(
 			@RequestBody CalificacionDTO calificacion) throws Exception {
 		return ResponseEntity.ok(calificacionService.consGastronomiaByCalificacion(calificacion));
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Consulta El promedio de calificacion por codigo de gastronomia
+	 */
+	@PostMapping("/getPromedioCalificacion")
+	public ResponseEntity<CalificacionDTO> getPromedioCalificacion(@RequestBody GastronomiaDTO gastcodi) throws Exception {
+		return ResponseEntity.ok(calificacionService.getPromedioCalificacion(gastcodi));
 	}
 
 }
