@@ -26,8 +26,9 @@ public interface GastronomiaService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los platos tipicos
+	 * @Descripcion Método para cambiar el estado de los platos tipicos
 	 */
-	public Integer inactivarGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception;
-
+	public Integer cambiarEstadoGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception;
+	
+	
 }

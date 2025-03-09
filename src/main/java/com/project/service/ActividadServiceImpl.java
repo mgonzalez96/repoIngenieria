@@ -43,11 +43,12 @@ public class ActividadServiceImpl implements ActividadService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar una actividad por codigo
+	 * @Descripcion Método para cambiar el estado de una actividad por codigo
 	 */
 	@Override
-	public Integer inactivarActividad(Integer acticodi) throws Exception {
-		return actividadRepositoryImpl.inactivarActividad(acticodi);
+	public Integer cambiarEstadoActividad(ActividadDTO acticodi) throws Exception {
+		return actividadRepositoryImpl.cambiarEstadoActividad(acticodi);
 	}
+
 
 }

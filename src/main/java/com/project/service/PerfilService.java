@@ -1,5 +1,7 @@
 package com.project.service;
 
+import java.util.List;
+
 import com.project.dto.Perfil;
 
 public interface PerfilService {
@@ -18,8 +20,14 @@ public interface PerfilService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los perfiles
+	 * @Descripcion Método para cambiar el estado de los perfiles
 	 */
-	public Integer inactivarPerfil(Perfil perfil) throws Exception;
+	public Integer cambiarEstadoPerfil(Perfil perfil) throws Exception;
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para listar los perfiles por estado
+	 */
+	public List<Perfil> consultaPerfilByEstado(Perfil perfil) throws Exception;
 
 }

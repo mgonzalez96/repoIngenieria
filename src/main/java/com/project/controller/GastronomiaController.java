@@ -50,11 +50,12 @@ public class GastronomiaController {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los platos tipicos
+	 * @Descripcion Método para cambiar el estado de los platos tipicos
 	 */
-	@PutMapping("/inactivarGastronomia")
-	public ResponseEntity<Integer> inactivarGastronomia(@RequestBody GastronomiaDTO gastronomiaDTO) throws Exception {
-		return ResponseEntity.ok(gastronomiaService.inactivarGastronomia(gastronomiaDTO));
+	@PutMapping("/cambiarEstadoGastronomia")
+	public ResponseEntity<Integer> cambiarEstadoGastronomia(@RequestBody GastronomiaDTO gastronomiaDTO)
+			throws Exception {
+		return ResponseEntity.ok(gastronomiaService.cambiarEstadoGastronomia(gastronomiaDTO));
 	}
 
 }

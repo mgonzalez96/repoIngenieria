@@ -44,11 +44,11 @@ public class SitioTuristicoServiceImpl implements SitioTuristicoService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los sitios turisticos
+	 * @Descripcion Método para cambiar el estado de los sitios turisticos
 	 */
 	@Override
-	public Integer inactivarSitioTuristico(SitioTuristicoDTO sitioTuristicoDTO) throws Exception {
-		return sitioTuristicoRepositoryImpl.inactivarSitioTuristico(sitioTuristicoDTO);
+	public Integer cambiarEstadoSitioTuristico(SitioTuristicoDTO sitioTuristicoDTO) throws Exception {
+		return sitioTuristicoRepositoryImpl.cambiarEstadoSitioTuristico(sitioTuristicoDTO);
 	}
 
 	/**

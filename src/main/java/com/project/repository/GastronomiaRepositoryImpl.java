@@ -82,22 +82,23 @@ public class GastronomiaRepositoryImpl extends JdbcDaoSupport {
 // -------------------------------------------------------------------------------------
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los platos tipicos
+	 * @Descripcion Método para cambiar el estado de los platos tipicos
 	 */
-	public Integer inactivarGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
+	public Integer cambiarEstadoGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
 		try {
-			String SQL = " UPDATE public.gastronomia " + "	SET gastesta=0 " + "	WHERE gastcodi=? ";
+			String SQL = " UPDATE public.gastronomia " + "	SET gastesta = ? " + "	WHERE gastcodi=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, gastronomiaDTO.getGastcodi());
+					ps.setInt(1, gastronomiaDTO.getGastesta());
+					ps.setInt(2, gastronomiaDTO.getGastcodi());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
-			System.err.println("Exception GastronomiaRepositoryImpl inactivarGastronomia: " + e.toString());
-			throw new Exception("Gastronomia no existe para ser inactivada");
+			System.err.println("Exception GastronomiaRepositoryImpl cambiarEstadoGastronomia: " + e.toString());
+			throw new Exception("Gastronomia no existe para cambio de estado");
 		}
 	}
 
@@ -161,5 +162,6 @@ public class GastronomiaRepositoryImpl extends JdbcDaoSupport {
 			return calificacion;
 		}
 	};
+
 
 }

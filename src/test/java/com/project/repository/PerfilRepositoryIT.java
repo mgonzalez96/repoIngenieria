@@ -50,7 +50,7 @@ class PerfilRepositoryIT {
 		Perfil perfil = new Perfil();
 		perfil.setEstado(0);
 		perfil.setIdperfil(12);
-		assertNotNull(accesoRepositoryImpl.inactivarPerfil(perfil), "Perfil inactivo");
+		assertNotNull(accesoRepositoryImpl.cambiarEstadoPerfil(perfil), "Perfil inactivo");
 	}
 
 }

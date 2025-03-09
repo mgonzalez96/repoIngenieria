@@ -49,11 +49,12 @@ public class ActividadController {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar una actividad por codigo
+	 * @Descripcion Método para cambiar el estado de una actividad por codigo
 	 */
-	@PutMapping("/inactivarActividad")
-	public ResponseEntity<Integer> inactivarActividad(@RequestBody ActividadDTO actividadDTO) throws Exception {
-		return ResponseEntity.ok(actividadService.inactivarActividad(actividadDTO.getActicodi()));
+	@PutMapping("/cambiarEstadoActividad")
+	public ResponseEntity<Integer> cambiarEstadoActividad(@RequestBody ActividadDTO actividadDTO) throws Exception {
+		return ResponseEntity.ok(actividadService.cambiarEstadoActividad(actividadDTO));
 	}
+	
 
 }

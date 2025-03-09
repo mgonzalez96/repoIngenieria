@@ -27,9 +27,9 @@ public interface SitioTuristicoService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los sitios turisticos
+	 * @Descripcion Método para cambiar el estado de los sitios turisticos
 	 */
-	public Integer inactivarSitioTuristico(SitioTuristicoDTO sitioTuristicoDTO) throws Exception;
+	public Integer cambiarEstadoSitioTuristico(SitioTuristicoDTO sitioTuristicoDTO) throws Exception;
 
 	/**
 	 * @Usuario Mariana Acevedo

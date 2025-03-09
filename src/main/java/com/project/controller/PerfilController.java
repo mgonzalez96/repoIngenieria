@@ -1,5 +1,7 @@
 package com.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +18,7 @@ import com.project.service.PerfilService;
 public class PerfilController {
 
 	@Autowired
-	PerfilService accesoService;
+	PerfilService perfilService;
 
 	/**
 	 * @Usuario Mariana Acevedo
@@ -24,7 +26,7 @@ public class PerfilController {
 	 */
 	@PostMapping("/crearPerfil")
 	public ResponseEntity<Integer> crearPerfil(@RequestBody Perfil perfil) throws Exception {
-		return ResponseEntity.ok(accesoService.crearPerfil(perfil));
+		return ResponseEntity.ok(perfilService.crearPerfil(perfil));
 	}
 
 	/**
@@ -33,16 +35,25 @@ public class PerfilController {
 	 */
 	@PutMapping("/modificarPerfil")
 	public ResponseEntity<Integer> modificarPerfil(@RequestBody Perfil perfil) throws Exception {
-		return ResponseEntity.ok(accesoService.modificarPerfil(perfil));
+		return ResponseEntity.ok(perfilService.modificarPerfil(perfil));
 	}
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los perfiles
+	 * @Descripcion Método para cambiar el estado de los perfiles
 	 */
-	@PutMapping("/inactivarPerfil")
-	public ResponseEntity<Integer> inactivarPerfil(@RequestBody Perfil perfil) throws Exception {
-		return ResponseEntity.ok(accesoService.inactivarPerfil(perfil));
+	@PutMapping("/cambiarEstadoPerfil")
+	public ResponseEntity<Integer> cambiarEstadoPerfil(@RequestBody Perfil perfil) throws Exception {
+		return ResponseEntity.ok(perfilService.cambiarEstadoPerfil(perfil));
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para listar los perfiles por estado
+	 */
+	@PostMapping("/consultaPerfilByEstado")
+	public ResponseEntity<List<Perfil>> consultaPerfilByEstado(@RequestBody Perfil perfil) throws Exception {
+		return ResponseEntity.ok(perfilService.consultaPerfilByEstado(perfil));
 	}
 
 }

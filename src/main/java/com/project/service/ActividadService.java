@@ -26,7 +26,9 @@ public interface ActividadService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar una actividad por codigo
+	 * @Descripcion Método para cambiar el estado de una actividad por codigo
 	 */
-	public Integer inactivarActividad(Integer acticodi) throws Exception;
+	public Integer cambiarEstadoActividad(ActividadDTO acticodi) throws Exception;
+	
+	
 }

@@ -44,11 +44,11 @@ public class GastronomiaServiceImpl implements GastronomiaService {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los platos tipicos
+	 * @Descripcion Método para cambiar el estado de los platos tipicos
 	 */
 	@Override
-	public Integer inactivarGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
-		return gastronomiaRepositoryImpl.inactivarGastronomia(gastronomiaDTO);
+	public Integer cambiarEstadoGastronomia(GastronomiaDTO gastronomiaDTO) throws Exception {
+		return gastronomiaRepositoryImpl.cambiarEstadoGastronomia(gastronomiaDTO);
 	}
 
 }

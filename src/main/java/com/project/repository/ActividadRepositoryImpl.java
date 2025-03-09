@@ -147,22 +147,24 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 // -------------------------------------------------------------------------------------
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar una actividad por codigo
+	 * @Descripcion Método para cambiar el estado de una actividad por codigo
 	 */
-	public Integer inactivarActividad(Integer acticodi) throws Exception {
+	public Integer cambiarEstadoActividad(ActividadDTO acticodi) throws Exception {
 		try {
-			String SQL = " UPDATE public.actividad SET actiesta = 0 WHERE acticodi=? ";
+			String SQL = " UPDATE public.actividad SET actiesta = ? WHERE acticodi=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, acticodi);
+					ps.setInt(1, acticodi.getActiesta());
+					ps.setInt(2, acticodi.getActicodi());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
-			System.err.println("Exception ActividadRepositoryImpl inactivarActividad: " + e.toString());
-			throw new Exception("Actividad no existe para inactivarla");
+			System.err.println("Exception ActividadRepositoryImpl cambiarEstadoActividad: " + e.toString());
+			throw new Exception("Actividad no existe para cambiar el estado");
 		}
 	}
+
 }

@@ -138,22 +138,23 @@ public class SitioTuristicoRepositoryImpl extends JdbcDaoSupport {
 // -------------------------------------------------------------------------------------
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los sitios turisticos
+	 * @Descripcion Método para cambiar el estado de los sitios turisticos
 	 */
-	public Integer inactivarSitioTuristico(SitioTuristicoDTO sitioTuristicoDTO) throws Exception {
+	public Integer cambiarEstadoSitioTuristico(SitioTuristicoDTO sitioTuristicoDTO) throws Exception {
 		try {
-			String SQL = "  UPDATE public.sitioturistico  " + "	SET turiesta=0  " + "	WHERE turicodi=? ";
+			String SQL = "  UPDATE public.sitioturistico  " + "	SET turiesta = ?  " + "	WHERE turicodi=? ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, sitioTuristicoDTO.getTuricodi());
+					ps.setInt(1, sitioTuristicoDTO.getTuriesta());
+					ps.setInt(2, sitioTuristicoDTO.getTuricodi());
 				}
 			};
 			return getJdbcTemplate().update(SQL, setter);
 		} catch (Exception e) {
-			System.err.println("Exception SitioTuristicoRepositoryImpl inactivarSitioTuristico: " + e.toString());
-			throw new Exception("Sitio turistico no existe para ser inactivado");
+			System.err.println("Exception SitioTuristicoRepositoryImpl cambiarEstadoSitioTuristico: " + e.toString());
+			throw new Exception("Sitio turistico no existe para cambio de estado");
 		}
 	}
 
@@ -179,5 +180,7 @@ public class SitioTuristicoRepositoryImpl extends JdbcDaoSupport {
 			throw new Exception("Sitio turistico no existe");
 		}
 	}
+
+
 
 }

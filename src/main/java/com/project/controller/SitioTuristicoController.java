@@ -53,12 +53,12 @@ public class SitioTuristicoController {
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los sitios turisticos
+	 * @Descripcion Método para cambiar el estado de los sitios turisticos
 	 */
-	@PutMapping("/inactivarSitioTuristico")
-	public ResponseEntity<Integer> inactivarSitioTuristico(@RequestBody SitioTuristicoDTO sitioTuristicoDTO)
+	@PutMapping("/cambiarEstadoSitioTuristico")
+	public ResponseEntity<Integer> cambiarEstadoSitioTuristico(@RequestBody SitioTuristicoDTO sitioTuristicoDTO)
 			throws Exception {
-		return ResponseEntity.ok(sitioTuristicoService.inactivarSitioTuristico(sitioTuristicoDTO));
+		return ResponseEntity.ok(sitioTuristicoService.cambiarEstadoSitioTuristico(sitioTuristicoDTO));
 	}
 
 	/**

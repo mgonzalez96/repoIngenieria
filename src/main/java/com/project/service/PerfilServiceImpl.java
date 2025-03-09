@@ -1,5 +1,7 @@
 package com.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ import com.project.repository.PerfilRepositoryImpl;
 public class PerfilServiceImpl implements PerfilService {
 
 	@Autowired
-	PerfilRepositoryImpl accesoRepositoryImpl;
+	PerfilRepositoryImpl perfilRepositoryImpl;
 
 	/**
 	 * @Usuario Mariana Acevedo
@@ -18,7 +20,7 @@ public class PerfilServiceImpl implements PerfilService {
 	 */
 	@Override
 	public Integer crearPerfil(Perfil perfil) throws Exception {
-		return accesoRepositoryImpl.crearPerfil(perfil);
+		return perfilRepositoryImpl.crearPerfil(perfil);
 	}
 
 	/**
@@ -27,16 +29,25 @@ public class PerfilServiceImpl implements PerfilService {
 	 */
 	@Override
 	public Integer modificarPerfil(Perfil perfil) throws Exception {
-		return accesoRepositoryImpl.modificarPerfil(perfil);
+		return perfilRepositoryImpl.modificarPerfil(perfil);
 	}
 
 	/**
 	 * @Usuario Mariana Acevedo
-	 * @Descripcion Método para inactivar los perfiles
+	 * @Descripcion Método para cambiar el estado de los perfiles
 	 */
 	@Override
-	public Integer inactivarPerfil(Perfil perfil) throws Exception {
-		return accesoRepositoryImpl.inactivarPerfil(perfil);
+	public Integer cambiarEstadoPerfil(Perfil perfil) throws Exception {
+		return perfilRepositoryImpl.cambiarEstadoPerfil(perfil);
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Método para listar los perfiles por estado
+	 */
+	@Override
+	public List<Perfil> consultaPerfilByEstado(Perfil perfil) throws Exception {
+		return perfilRepositoryImpl.consultaPerfilByEstado(perfil);
 	}
 
 }
