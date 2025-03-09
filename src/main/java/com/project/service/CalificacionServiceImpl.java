@@ -51,4 +51,13 @@ public class CalificacionServiceImpl implements CalificacionService {
 		return calificacionRepositoryImpl.getPromedioCalificacion(gastcodi);
 	}
 
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Lista las calificaciones por usuario
+	 */
+	@Override
+	public List<CalificacionDTO> listaCalificacionByDocumento(CalificacionDTO calificacion) throws Exception {
+		return calificacionRepositoryImpl.listaCalificacionByDocumento(calificacion);
+	}
+
 }

@@ -30,5 +30,11 @@ public interface CalificacionService {
 	 * @Descripcion Consulta El promedio de calificacion por codigo de gastronomia
 	 */
 	public CalificacionDTO getPromedioCalificacion(GastronomiaDTO gastcodi) throws Exception;
+	
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Lista las calificaciones por usuario
+	 */
+	public List<CalificacionDTO> listaCalificacionByDocumento(CalificacionDTO calificacion) throws Exception;
 
 }

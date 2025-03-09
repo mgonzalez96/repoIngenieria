@@ -13,7 +13,7 @@ public class UsuarioTurismoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer ustucodi;
-	private Integer documento;
+	private Long documento;
 	private Integer turicodi;
 	private Integer like;
 }

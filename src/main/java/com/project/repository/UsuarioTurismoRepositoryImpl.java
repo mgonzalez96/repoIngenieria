@@ -30,7 +30,7 @@ public class UsuarioTurismoRepositoryImpl extends JdbcDaoSupport {
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, turismo.getDocumento());
+					ps.setLong(1, turismo.getDocumento());
 					ps.setLong(2, turismo.getTuricodi());
 					ps.setInt(3, turismo.getLike());
 				}
@@ -53,7 +53,7 @@ public class UsuarioTurismoRepositoryImpl extends JdbcDaoSupport {
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, turismo.getDocumento());
+					ps.setLong(1, turismo.getDocumento());
 					ps.setLong(2, turismo.getTuricodi());
 				}
 			};
@@ -77,7 +77,7 @@ public class UsuarioTurismoRepositoryImpl extends JdbcDaoSupport {
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setInt(1, turismo.getDocumento());
+					ps.setLong(1, turismo.getDocumento());
 					ps.setLong(2, turismo.getTuricodi());
 				}
 			};

@@ -14,6 +14,7 @@ public class TipoCalificacionDTO implements Serializable {
 	
 	private Integer tipocodi;
 	private Integer tiponomb;
+	private String tiponombStr;
 	//private String tiponomb;
 
 

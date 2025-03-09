@@ -272,4 +272,65 @@ public class CalificacionRepositoryImpl extends JdbcDaoSupport {
 		}
 	}
 
+//---------------------------------------------------------------------------------------------------
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Lista las calificaciones por usuario
+	 */
+	public List<CalificacionDTO> listaCalificacionByDocumento(CalificacionDTO calificacion) throws Exception {
+		try {
+			String SQL = " SELECT g.gastcodi, g.gastnomb, c.caliuser, "
+					+ "       u.nombreuno, u.apellidouno, "
+					+ "       t.tiponomb,  "
+					+ "         case  "
+					+ "	       when tiponomb = '5' then 'Excelente' "
+					+ "	       when tiponomb = '4' then 'Bueno' "
+					+ "	       when tiponomb = '3' then 'Regular' "
+					+ "	       when tiponomb = '2' then 'Malo' "
+					+ "	     else 'Pésimo' "
+					+ "	     end  as calificacion "
+					+ " FROM public.calificacion c "
+					+ " INNER JOIN public.tipocalificacion t "
+					+ "  ON t.tipocodi = c.tipocodi "
+					+ " INNER JOIN public.gastronomia g "
+					+ "  ON g.gastcodi = c.gastcodi "
+					+ " INNER JOIN public.usuario u "
+					+ "  ON u.documento = c.caliuser "
+					+ " WHERE c.caliuser = ? "
+					+ " order by 3 desc ";
+			PreparedStatementSetter setter = new PreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps) throws SQLException {
+					ps.setLong(1, calificacion.getCaliuser().getDocumento());
+				}
+			};
+			return getJdbcTemplate().query(SQL, setter, listaCalificacionByDocumentoRowMapper);
+		} catch (Exception e) {
+			System.err.println("Exception CalificacionRepositoryImpl listaCalificacionByDocumento: " + e.toString());
+			throw new Exception("No existen calificaciones del usuario");
+		}
+	}
+
+	private RowMapper<CalificacionDTO> listaCalificacionByDocumentoRowMapper = new RowMapper<CalificacionDTO>() {
+		@Override
+		public CalificacionDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+			CalificacionDTO calificacion = null;
+			try {
+				calificacion = new CalificacionDTO();
+				calificacion.getGastcodi().setGastcodi(rs.getInt("gastcodi"));
+				calificacion.getGastcodi().setGastnomb(rs.getString("gastnomb"));
+				calificacion.getCaliuser().setDocumento(rs.getLong("caliuser"));
+				calificacion.getCaliuser().setNombreuno(rs.getString("nombreuno"));
+				calificacion.getCaliuser().setApellidouno(rs.getString("apellidouno"));
+				calificacion.getTipocodi().setTiponomb(rs.getInt("tiponomb"));
+				calificacion.getTipocodi().setTiponombStr(rs.getString("calificacion"));
+			} catch (Exception e) {
+				System.err.println(
+						"Exception CalificacionRepositoryImpl listaCalificacionByDocumento_1: " + e.toString());
+			}
+			return calificacion;
+		}
+	};
+
 }

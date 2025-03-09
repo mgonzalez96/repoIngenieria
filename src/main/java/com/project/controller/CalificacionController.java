@@ -54,8 +54,19 @@ public class CalificacionController {
 	 * @Descripcion Consulta El promedio de calificacion por codigo de gastronomia
 	 */
 	@PostMapping("/getPromedioCalificacion")
-	public ResponseEntity<CalificacionDTO> getPromedioCalificacion(@RequestBody GastronomiaDTO gastcodi) throws Exception {
+	public ResponseEntity<CalificacionDTO> getPromedioCalificacion(@RequestBody GastronomiaDTO gastcodi)
+			throws Exception {
 		return ResponseEntity.ok(calificacionService.getPromedioCalificacion(gastcodi));
+	}
+
+	/**
+	 * @Usuario Mariana Acevedo
+	 * @Descripcion Lista las calificaciones por usuario
+	 */
+	@PostMapping("/listaCalificacionByDocumento")
+	public ResponseEntity<List<CalificacionDTO>> listaCalificacionByDocumento(@RequestBody CalificacionDTO calificacion)
+			throws Exception {
+		return ResponseEntity.ok(calificacionService.listaCalificacionByDocumento(calificacion));
 	}
 
 }
