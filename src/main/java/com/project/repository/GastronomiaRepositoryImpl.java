@@ -29,7 +29,7 @@ public class GastronomiaRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = " INSERT INTO public.gastronomia("
 					+ "	gastcodi, gastnomb, gastdesc, gastimag, gastface, gasturlx, gastinst, gastesta) "
-					+ "	VALUES (nextval('sec_gastronomia'), ?, ?, ?, ?, ?, ?, 1)  ";
+					+ "	VALUES ((select coalesce((max(gastcodi)+1), 1) from public.gastronomia), ?, ?, ?, ?, ?, ?, 1)  ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

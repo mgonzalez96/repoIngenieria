@@ -80,7 +80,8 @@ public class SitioTuristicoRepositoryImpl extends JdbcDaoSupport {
 		try {
 			String SQL = "  INSERT INTO public.sitioturistico("
 					+ "	turicodi, turinomb, turidire, turiimag, ubiccodi, turiesta, turilike, turiface,"
-					+ " turiurlx, turiinst) " + "	VALUES (nextval('sec_sitioturistico'), ?, ?, ?, ?, 1, ?, ?, ?, ?) ";
+					+ " turiurlx, turiinst) " 
+					+ "	VALUES ((select coalesce((max(turicodi)+1), 1) from public.sitioturistico), ?, ?, ?, ?, 1, ?, ?, ?, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

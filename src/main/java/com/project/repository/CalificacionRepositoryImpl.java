@@ -56,21 +56,19 @@ public class CalificacionRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearCalificacion(CalificacionDTO calificacionDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.calificacion(calicodi, califech, caliuser, tipocodi, caliobse, gastcodi)"
-					+ "	VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?, ?) ";
+					+ "	VALUES ((select coalesce((max(calicodi)+1), 1) from public.calificacion), CURRENT_TIMESTAMP, ?, ?, ?, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
 				public void setValues(PreparedStatement ps) throws SQLException {
-					calificacionDTO.setCalicodi(getSecuencia());
-					ps.setInt(1, calificacionDTO.getCalicodi());
-					ps.setLong(2, calificacionDTO.getCaliuser().getDocumento());
-					ps.setInt(3, calificacionDTO.getTipocodi().getTipocodi());
-					ps.setString(4, calificacionDTO.getCaliobse());
-					ps.setInt(5, calificacionDTO.getGastcodi().getGastcodi());
+					ps.setLong(1, calificacionDTO.getCaliuser().getDocumento());
+					ps.setInt(2, calificacionDTO.getTipocodi().getTipocodi());
+					ps.setString(3, calificacionDTO.getCaliobse());
+					ps.setInt(4, calificacionDTO.getGastcodi().getGastcodi());
 				}
 			};
 			getJdbcTemplate().update(SQL, setter);
-			return calificacionDTO.getCalicodi();
+			return 1;
 		} catch (Exception e) {
 			System.err.println("Exception CalificacionRepositoryImpl crearCalificacion: " + e.toString());
 			return 0;

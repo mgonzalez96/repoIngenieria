@@ -57,7 +57,7 @@ public class TipoEventoRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearTipoEvento(TipoEventoDTO tipoEventoDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.tipoevento( " + "	evencodi, evennomb) "
-					+ "	VALUES (nextval('tipo_evento_evencodi_seq'), ?) ";
+					+ "	VALUES ((select coalesce((max(evencodi)+1), 1) from public.tipoevento), ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

@@ -25,7 +25,7 @@ public class UsuarioTurismoRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearLikeSitioTuristico(UsuarioTurismoDTO turismo) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.usuarioturismo(ustucodi, documento, turicodi, likes) "
-					+ "	VALUES (nextval('sec_user_turismo'), ?, ?, ?) ";
+					+ "	VALUES ((select coalesce((max(ustucodi)+1), 1) from public.usuarioturismo), ?, ?, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

@@ -86,7 +86,7 @@ public class ActividadRepositoryImpl extends JdbcDaoSupport {
 			String SQL = " INSERT INTO public.actividad("
 					+ "	acticodi, actinomb, actidesc, actiimag, evencodi, ubiccodi, actifein, actifefi, actiesta,"
 					+ "actiface, actiurlx, actiinst) "
-					+ "	VALUES (nextval('sec_actividad'), ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?) ";
+					+ "	VALUES ((select coalesce((max(acticodi)+1), 1) from public.actividad), ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

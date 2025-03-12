@@ -26,7 +26,7 @@ public class PerfilRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearPerfil(Perfil perfil) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.perfil(idperfil, nombreperfil, estado) "
-					+ "	VALUES (nextval('sec_perfil'), ?, 1) ";
+					+ "	VALUES ((select coalesce((max(idperfil)+1), 1) from public.perfil), ?, 1) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

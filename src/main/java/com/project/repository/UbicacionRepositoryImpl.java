@@ -57,7 +57,8 @@ public class UbicacionRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearUbicacion(UbicacionDTO ubicacionDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.ubicacion("
-					+ "	ubiccodi, ubicnomb) VALUES (nextval('sec_ubicacion'), ?) ";
+					+ "	ubiccodi, ubicnomb) "
+					+ " VALUES ((select coalesce((max(ubiccodi)+1), 1) from public.ubicacion), ?) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override

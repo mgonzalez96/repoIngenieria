@@ -26,7 +26,7 @@ public class HotelRepositoryImpl extends JdbcDaoSupport {
 	public Integer crearHotel(HotelDTO hotelDTO) throws Exception {
 		try {
 			String SQL = " INSERT INTO public.hotel( " + "	hotecodi, hotenomb, hotedesc, ubiccodi, hoteesta) "
-					+ "	VALUES (nextval('sec_hotel'), ?, ?, ?, 1) ";
+					+ "	VALUES ((select coalesce((max(hotecodi)+1), 1) from public.hotel), ?, ?, ?, 1) ";
 
 			PreparedStatementSetter setter = new PreparedStatementSetter() {
 				@Override
